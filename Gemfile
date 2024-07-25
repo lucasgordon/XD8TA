@@ -25,8 +25,9 @@ gem "twitter"
 
 gem "oauth2"
 
-gem "simple_oauth"
+gem 'bcrypt', '~> 3.1.7'
 
+gem "simple_oauth"
 
 gem "json"
 
@@ -88,3 +89,6 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "bootstrap"
+gem "sassc-rails"
