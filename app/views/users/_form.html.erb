@@ -1,0 +1,20 @@
+<%= form_with model: @user do |f| %>
+    <div class="d-flex flex-column gap-2 w-25 m-4">
+        <%= f.label :name %>
+        <%= f.text_field :name, autofocus: true %>
+
+        <%= f.label :email %>
+        <%= f.email_field :email %>
+
+        <%= f.label :password %>
+        <%= f.password_field :password %>
+
+        <%= f.label :password_confirmation %>
+        <%= f.password_field :password_confirmation %>
+
+        <%= f.label :x_username %>
+        <%= f.text_field :x_username %>
+
+        <%= f.submit @user.new_record? ? "Sign Up" : "Update" %>
+    </div>
+<% end %>

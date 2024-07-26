@@ -1,0 +1,9 @@
+<h1>User</h1>
+<%= @user.name %>
+<%= @user.email %>
+<%= @user.x_username %>
+<%= link_to 'Edit', edit_user_path(@user) %> 
+
+<% if user_signed_in? %>
+    <%= link_to 'Start Fetch Process', initiate_fetch_path %>
+<% end %>
