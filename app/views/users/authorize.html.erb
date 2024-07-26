@@ -1,9 +1,0 @@
-<h1>Authorize Access</h1>
-<p>Please authorize the app by visiting the following URL:</p>
-<p><%= link_to @auth_url, @auth_url, target: "_blank" %></p>
-
-<%= form_with url: fetch_posts_path, method: :post do |form| %>
-  <%= form.label :pin, "Enter the PIN provided:" %>
-  <%= form.text_field :pin %>
-  <%= form.submit "Submit PIN" %>
-<% end %>

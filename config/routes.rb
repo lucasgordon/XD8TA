@@ -15,6 +15,5 @@ Rails.application.routes.draw do
 
   resources :posts
 
-  get "initiate_fetch", to: "users#initiate_fetch", as: :initiate_fetch
-  post "fetch_posts", to: "users#fetch_posts", as: :fetch_posts
+  get "fetch_posts", to: "users#fetch_posts", as: :fetch_posts
 end
