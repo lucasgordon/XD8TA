@@ -92,3 +92,6 @@ end
 
 gem "bootstrap"
 gem "sassc-rails"
+
+gem 'omniauth-twitter'
+gem 'simple_oauth'
