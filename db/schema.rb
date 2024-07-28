@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_28_000441) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_28_170101) do
   create_table "context_annotation_domains", force: :cascade do |t|
     t.integer "post_id", null: false
     t.string "domain_name"
@@ -62,6 +62,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_28_000441) do
     t.string "in_reply_to_user_id"
     t.integer "user_profile_clicks"
     t.integer "engagements"
+    t.string "url"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
