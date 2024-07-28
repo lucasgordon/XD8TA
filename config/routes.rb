@@ -1,19 +1,19 @@
 Rails.application.routes.draw do
   root 'home#index'
 
-  resources :users, only: [:new, :show, :create, :edit, :update] do
-
+  resources :users do
+    member do
+      get :posts
+      get :fetch_posts_private_metrics
+      get :fetch_posts_public_metrics
+    end
   end
 
-  resource :sessions, only: [:new, :create, :destroy]
-
   get "sign_up" => "users#new", as: :sign_up
+
+  resource :session, only: [:new, :create, :destroy]
   get "sign_in" => "sessions#new", as: :sign_in
   get "sign_out" => "sessions#destroy", as: :sign_out
 
-  get "up" => "rails/health#show", as: :rails_health_check
-
   resources :posts
-
-  get "fetch_posts", to: "users#fetch_posts", as: :fetch_posts
 end

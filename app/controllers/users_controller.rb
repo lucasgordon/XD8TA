@@ -25,10 +25,20 @@ class UsersController < ApplicationController
     redirect_to root_path
   end
 
-  def fetch_posts
-    twitter_api = XClient.new("1431612698836541440")
-    result = twitter_api.fetch_and_save_tweets
-    render plain: result
+  def posts
+    @posts = current_user.posts
+  end
+
+  def fetch_posts_private_metrics
+    twitter_api = XClient.new(current_user)
+    result = twitter_api.fetch_private_metrics
+    redirect_to posts_user_path(current_user)
+  end
+
+  def fetch_posts_public_metrics
+    twitter_api = XClient.new(current_user)
+    result = twitter_api.fetch_public_metrics
+    redirect_to posts_user_path(current_user)
   end
 
 

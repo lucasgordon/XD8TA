@@ -1,9 +1,19 @@
-<h1>User</h1>
-<%= @user.name %>
-<%= @user.email %>
-<%= @user.x_username %>
-<%= link_to 'Edit', edit_user_path(@user) %> 
-
-<% if user_signed_in? %>
-    <%= link_to 'Start Fetch Process', fetch_posts_path %>
-<% end %>
+<div class="container mt-4">
+    <h1>User</h1>
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title"><%= @user.name %></h5>
+        <p class="card-text"><%= @user.email %></p>
+        <p class="card-text"><%= @user.x_username %></p>
+        <%= link_to 'Edit', edit_user_path(@user), class: 'btn btn-primary' %>
+      </div>
+    </div>
+  
+    <% if user_signed_in? %>
+      <div class="mt-3">
+        <%= link_to 'Start Private Fetch Process', fetch_posts_private_metrics_user_path(@user), class: 'btn btn-success', data: { confirm: 'Are you sure you want to start the fetch process?' } %>
+        <%= link_to 'Start Public Fetch Process', fetch_posts_public_metrics_user_path(@user), class: 'btn btn-success', data: { confirm: 'Are you sure you want to start the fetch process?' } %>
+        <%= link_to 'View X Posts', posts_user_path(@user), class: 'btn btn-info' %>
+      </div>
+    <% end %>
+    </div>
