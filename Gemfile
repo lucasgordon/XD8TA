@@ -25,6 +25,8 @@ gem "twitter"
 
 gem "oauth2"
 
+gem "launchy"
+
 gem 'bcrypt', '~> 3.1.7'
 
 gem "simple_oauth"

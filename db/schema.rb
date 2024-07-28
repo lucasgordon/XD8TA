@@ -10,7 +10,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_25_222240) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_28_000441) do
+  create_table "context_annotation_domains", force: :cascade do |t|
+    t.integer "post_id", null: false
+    t.string "domain_name"
+    t.string "domain_description"
+    t.string "entity_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "entity_description"
+    t.index ["post_id"], name: "index_context_annotation_domains_on_post_id"
+  end
+
+  create_table "entities_annotations", force: :cascade do |t|
+    t.integer "post_id", null: false
+    t.integer "start_location"
+    t.integer "end_location"
+    t.string "probability"
+    t.string "annotation_type"
+    t.string "normalized_text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_entities_annotations_on_post_id"
+  end
+
+  create_table "post_mentions", force: :cascade do |t|
+    t.string "mentioned_user_id"
+    t.string "mentioned_username"
+    t.integer "post_id", null: false
+    t.integer "start_location"
+    t.integer "end_location"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_post_mentions_on_post_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.string "post_id"
     t.text "text"
@@ -24,6 +58,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_25_222240) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
+    t.string "lang"
+    t.string "in_reply_to_user_id"
+    t.integer "user_profile_clicks"
+    t.integer "engagements"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
@@ -37,4 +75,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_25_222240) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "context_annotation_domains", "posts"
+  add_foreign_key "entities_annotations", "posts"
+  add_foreign_key "post_mentions", "posts"
 end
