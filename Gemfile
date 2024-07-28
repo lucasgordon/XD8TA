@@ -33,6 +33,10 @@ gem "simple_oauth"
 
 gem "json"
 
+gem "anthropic"
+
+gem "cohere-ruby", "~> 0.9.10"
+
 gem "typhoeus"
 
 gem "oauth"
