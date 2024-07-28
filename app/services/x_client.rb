@@ -6,6 +6,7 @@ class XClient
   BASE_URL = "https://api.twitter.com/2/users/"
 
   def initialize(user)
+    @user = user
     @user_id = user.id
     if user.x_id.nil?
       @x_id = find_user_x_id(user)
@@ -23,7 +24,7 @@ class XClient
   end
 
   def fetch_private_metrics
-    url = "#{BASE_URL}#{@x_id}/tweets?max_results=5" +
+    url = "#{BASE_URL}#{@x_id}/tweets?max_results=30" +
     "&tweet.fields=id,text,attachments,author_id,context_annotations,conversation_id,non_public_metrics,created_at,entities,geo,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,withheld" +
     "&expansions=attachments.poll_ids,attachments.media_keys,author_id,referenced_tweets.id,referenced_tweets.id.author_id,in_reply_to_user_id"
     data = fetch_twitter_data(url, {})
@@ -55,6 +56,7 @@ class XClient
           p.post_created_at = tweet['created_at']
           p.lang = tweet['lang']
           p.in_reply_to_user_id = tweet['in_reply_to_user_id']
+          p.url = "https://x.com/#{@user.x_username}/status/#{tweet['id']}"
 
           if tweet['non_public_metrics']
             p.engagements = tweet['non_public_metrics']['engagements'] || 0
