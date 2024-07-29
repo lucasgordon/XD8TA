@@ -39,6 +39,9 @@ gem "cohere-ruby", "~> 0.9.10"
 
 gem "typhoeus"
 
+gem 'sass-rails', '>= 6'
+
+
 gem "oauth"
 
 gem "httparty"

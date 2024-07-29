@@ -1,36 +1,42 @@
-<div class="container-flouid">
-    <nav class="navbar navbar-expand-lg bg-light">
-      <div class="container">
-        <a class="navbar-brand" href="/">
-          <h3>XD8TA</h3>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-          <% if current_user %>
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <%= link_to "My Profile", user_path(current_user), class: "nav-link active" %>
-              </li>
-              <li class="nav-item">
-                <%= link_to "My Posts", posts_user_path(current_user), class: "nav-link active" %>
-              </li>
-              <li>
-                <% if current_user %>
-                  <%= current_user.name %>
-                <% end %>
-              </li>
-    
-            </ul>
-          <% end %>
-          <form class="">
-            <%= link_to "Sign In", sign_in_path %>
-            <%= link_to "Sign Up", sign_up_path %>
-            <%= link_to "Sign Out", sign_out_path, method: :delete %>
-          </form>
-  
-        </div>
+<div class="container-fluid bg-dark text-white p-0 m-0">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <h3>>_ XD8TA</h3>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <% if current_user %>
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <%= link_to "My Posts", posts_user_path(current_user), class: "nav-link" %>
+            </li>
+          </ul>
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <%= current_user.name %>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" data-bs-theme="dark">
+                <li><%= link_to "My Profile", user_path(current_user), class: "dropdown-item" %></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><%= link_to "Sign Out", sign_out_path, method: :delete, class: "dropdown-item text-danger" %></li>
+              </ul>
+            </li>
+          </ul>
+        <% else %>
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <%= link_to "Sign In", sign_in_path, class: "btn btn-outline-light me-2" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Sign Up", sign_up_path, class: "btn btn-outline-light me-2" %>
+            </li>
+          </ul>
+        <% end %>
       </div>
-    </nav>
-  </div>
+    </div>
+  </nav>
+</div>

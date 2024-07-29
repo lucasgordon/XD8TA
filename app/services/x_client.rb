@@ -7,20 +7,31 @@ class XClient
 
   def initialize(user)
     @user = user
-    @user_id = user.id
-    if user.x_id.nil?
-      @x_id = find_user_x_id(user)
-      user.update!(x_id: @x_id)
-    else
-      @x_id = user.x_id
-    end
   end
 
-  def find_user_x_id(user)
+  def fetch_user_information(user)
     @username = user.x_username
-    url = "https://api.twitter.com/2/users/by/username/#{@username}"
+    fields = "user.fields=created_at,description,entities,id,location,name,pinned_tweet_id,profile_image_url,protected,public_metrics,url,username,verified,withheld"
+    url = "https://api.twitter.com/2/users/by/username/#{@username}?#{fields}"
     data = fetch_twitter_data(url, {})
-    data['data']['id']
+
+    if data['data']
+      user.update!(
+        x_id: data['data']['id'],
+        protected: data['data']['protected'],
+        verified: data['data']['verified'],
+        pinned_tweet_id: data['data']['pinned_tweet_id'],
+        profile_image_url: data['data']['profile_image_url'].gsub!(/_normal|_bigger|_mini/, ''),
+        followers_count: data['data']['public_metrics']['followers_count'],
+        following_count: data['data']['public_metrics']['following_count'],
+        tweet_count: data['data']['public_metrics']['tweet_count'],
+        listed_count: data['data']['public_metrics']['listed_count'],
+        like_count: data['data']['public_metrics']['like_count'],
+        description: data['data']['description'],
+        location: data['data']['location'],
+        x_account_created_at: data['data']['created_at']
+      )
+    end
   end
 
   def fetch_private_metrics
@@ -45,7 +56,7 @@ class XClient
       data['data'].each do |tweet|
         next if tweet['text'].include? "RT @"
 
-        post = Post.find_or_create_by(post_id: tweet['id'], user_id: @user_id) do |p|
+        post = Post.find_or_create_by(post_id: tweet['id'], user_id: @user.id) do |p|
           p.text = tweet['text']
           p.retweet_count = tweet['public_metrics']['retweet_count']
           p.reply_count = tweet['public_metrics']['reply_count']

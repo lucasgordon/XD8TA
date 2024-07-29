@@ -1,20 +1,33 @@
-<%= form_with model: @user do |f| %>
-    <div class="d-flex flex-column gap-2 w-25 m-4">
-        <%= f.label :name %>
-        <%= f.text_field :name, autofocus: true %>
+<%= form_with model: @user, local: true, class: "mt-4" do |f| %>
+  <div class="mb-3">
+    <%= f.label :name, class: "form-label" %>
+    <%= f.text_field :name, autofocus: true, class: "form-control" %>
+  </div>
 
-        <%= f.label :email %>
-        <%= f.email_field :email %>
+  <div class="mb-3">
+    <%= f.label :email, class: "form-label" %>
+    <%= f.email_field :email, class: "form-control" %>
+  </div>
 
-        <%= f.label :password %>
-        <%= f.password_field :password %>
+  <div class="mb-3">
+    <%= f.label :password, class: "form-label" %>
+    <%= f.password_field :password, class: "form-control" %>
+  </div>
 
-        <%= f.label :password_confirmation %>
-        <%= f.password_field :password_confirmation %>
+  <div class="mb-3">
+    <%= f.label :password_confirmation, class: "form-label" %>
+    <%= f.password_field :password_confirmation, class: "form-control" %>
+  </div>
 
-        <%= f.label :x_username %>
-        <%= f.text_field :x_username %>
-
-        <%= f.submit @user.new_record? ? "Sign Up" : "Update" %>
+  <div class="mb-3">
+    <%= f.label :x_username, class: "form-label" %>
+    <div class="input-group" data-controller="username">
+      <span class="input-group-text">@</span>
+      <%= f.text_field :x_username, class: "form-control", data: { username_target: "field", action: "keypress->username#preventAtSign" }, pattern: "[^@]*", title: "Username cannot contain the '@' character" %>
     </div>
+  </div>
+
+  <div class="d-grid">
+    <%= f.submit @user.new_record? ? "Sign Up" : "Update", class: "btn btn-secondary" %>
+  </div>
 <% end %>
