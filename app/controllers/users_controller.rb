@@ -13,6 +13,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     @user.email = @user.email.downcase if @user.email.present?
     @user.save!
+    session[:user_id] = @user.id
     redirect_to root_path
   end
 

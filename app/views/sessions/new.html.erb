@@ -1,11 +1,33 @@
-<h1>Sign In</h1>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card bg-dark text-white">
+        <div class="card-body" style="background-color: #1E1E1E">
+          <h1 class="card-title text-center">Sign In</h1>
+          <%= form_with(url: session_path, class: "mt-4") do |f| %>
+            <div class="mb-3">
+              <%= f.label :email, class: "form-label" %>
+              <%= f.email_field :email, autofocus: true, required: true, class: "form-control" %>
+            </div>
 
-<%= form_with(url: session_path) do |f| %>
-  <%= f.label :email %>
-  <%= f.email_field :email, autofocus: true, required: true %>
+            <div class="mb-3">
+              <%= f.label :password, class: "form-label" %>
+              <%= f.password_field :password, required: true, class: "form-control" %>
+            </div>
 
-  <%= f.label :password %>
-  <%= f.password_field :password, required: true %>
+            <div class="d-grid">
+              <%= f.submit "Sign In", class: "btn btn-secondary" %>
+            </div>
+          <% end %>
 
-  <%= f.submit "Sign In" %>
-<% end %>
+          <div class="mt-5">
+            <p class="text-center text-white mt-3">Don't have an account?</p>
+            <div div class="d-grid">
+              <%= link_to "Sign Up", sign_up_path, class: "btn btn-outline-light" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

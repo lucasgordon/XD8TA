@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_28_170101) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_29_004800) do
   create_table "context_annotation_domains", force: :cascade do |t|
     t.integer "post_id", null: false
     t.string "domain_name"
@@ -74,6 +74,22 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_28_170101) do
     t.integer "x_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "x_access_token"
+    t.string "x_access_token_secret"
+    t.string "x_access_token_key"
+    t.string "x_access_token_secret_key"
+    t.boolean "protected"
+    t.boolean "verified"
+    t.string "pinned_tweet_id"
+    t.string "profile_image_url"
+    t.integer "followers_count"
+    t.integer "following_count"
+    t.integer "tweet_count"
+    t.integer "listed_count"
+    t.integer "like_count"
+    t.text "description"
+    t.string "location"
+    t.string "x_account_created_at"
   end
 
   add_foreign_key "context_annotation_domains", "posts"
