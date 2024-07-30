@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :analytics
   root 'home#index'
 
   resources :users do
@@ -8,6 +9,8 @@ Rails.application.routes.draw do
       get :fetch_posts_public_metrics
     end
   end
+
+  resources :analytics, only: [:show]
 
   get "sign_up" => "users#new", as: :sign_up
 

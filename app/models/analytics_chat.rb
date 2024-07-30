@@ -1,0 +1,2 @@
+class AnalyticsChat < ApplicationRecord
+end

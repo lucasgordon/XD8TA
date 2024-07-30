@@ -10,7 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_29_004800) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_30_030004) do
+  create_table "analytics", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "best_post"
+    t.string "worst_post"
+    t.string "most_liked_post"
+    t.string "most_replied_post"
+    t.string "future_post_ideas"
+    t.string "who_user_converses_with_most"
+    t.string "what_user_posts_about_most"
+    t.string "what_time_has_best_engagement"
+    t.string "what_topics_have_best_engagement"
+    t.string "what_topics_have_worst_engagement"
+    t.string "what_time_has_worst_engagement"
+    t.string "what_entities_in_which_order_have_best_engagement"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_analytics_on_user_id"
+  end
+
+  create_table "analytics_chats", force: :cascade do |t|
+    t.integer "analytic_id", null: false
+    t.string "user_prompt"
+    t.string "prompt_temperature"
+    t.string "agent_response"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["analytic_id"], name: "index_analytics_chats_on_analytic_id"
+  end
+
   create_table "context_annotation_domains", force: :cascade do |t|
     t.integer "post_id", null: false
     t.string "domain_name"
@@ -92,6 +121,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_29_004800) do
     t.string "x_account_created_at"
   end
 
+  add_foreign_key "analytics", "users"
+  add_foreign_key "analytics_chats", "analytics"
   add_foreign_key "context_annotation_domains", "posts"
   add_foreign_key "entities_annotations", "posts"
   add_foreign_key "post_mentions", "posts"
