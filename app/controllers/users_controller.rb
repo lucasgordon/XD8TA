@@ -43,6 +43,24 @@ class UsersController < ApplicationController
     redirect_to posts_user_path(current_user)
   end
 
+  def analytics
+    @user = current_user
+    @analytics = @user.analytics
+  end
+
+  def generate_analytics
+    @user = current_user
+    @user.generate_analytics
+    redirect_to analytics_user_path(current_user)
+  end
+
+  def regenerate_analytics
+    @user = current_user
+    @user.analytics.delete_all
+    @user.generate_analytics
+    redirect_to analytics_user_path(current_user)
+  end
+
 
   private
 

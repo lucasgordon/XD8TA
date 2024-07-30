@@ -56,8 +56,11 @@ class XClient
       data['data'].each do |tweet|
         next if tweet['text'].include? "RT @"
 
-        post = Post.find_or_create_by(post_id: tweet['id'], user_id: @user.id) do |p|
+        post = Post.find_or_create_by(post_id: tweet['id']) do |p|
+          p.user_id = @user.id if tweet['username'].downcase == @username.downcase
           p.text = tweet['text']
+          p.x_username = tweet['username']
+          p.x_id = tweet['author_id']
           p.retweet_count = tweet['public_metrics']['retweet_count']
           p.reply_count = tweet['public_metrics']['reply_count']
           p.like_count = tweet['public_metrics']['like_count']
