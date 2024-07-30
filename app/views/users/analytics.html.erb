@@ -1,0 +1,22 @@
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Analytics Dashboard</h1>
+
+    <div class="d-flex justify-content-center mb-4">
+        <% if @user.analytics.any? %>
+            <%= link_to "Regenerate Analytics", regenerate_analytics_user_path(current_user), class: "btn btn-primary" %>
+        <% else %>
+            <%= link_to "Generate Analytics", generate_analytics_user_path(current_user), class: "btn btn-primary" %>
+        <% end %>
+    </div>
+
+    <% @analytics.each do |analytic| %>
+        <div class="card mb-3 shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h2 class="h5 card-title mb-0"><%= Analytic.titles[analytic.title] %></h2>
+            </div>
+            <div class="card-body bg-dark">
+                <p class="card-text"><%= analytic.body %></p>
+            </div>
+        </div>
+    <% end %>
+</div>

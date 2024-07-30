@@ -7,10 +7,13 @@ Rails.application.routes.draw do
       get :posts
       get :fetch_posts_private_metrics
       get :fetch_posts_public_metrics
+      get :analytics
+      get :generate_analytics
+      get :regenerate_analytics
     end
   end
 
-  resources :analytics, only: [:show]
+  resources :public_analytics, only: [:show, :index, :new, :create]
 
   get "sign_up" => "users#new", as: :sign_up
 

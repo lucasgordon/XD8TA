@@ -10,23 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_30_030004) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_30_203203) do
   create_table "analytics", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.string "best_post"
-    t.string "worst_post"
-    t.string "most_liked_post"
-    t.string "most_replied_post"
-    t.string "future_post_ideas"
-    t.string "who_user_converses_with_most"
-    t.string "what_user_posts_about_most"
-    t.string "what_time_has_best_engagement"
-    t.string "what_topics_have_best_engagement"
-    t.string "what_topics_have_worst_engagement"
-    t.string "what_time_has_worst_engagement"
-    t.string "what_entities_in_which_order_have_best_engagement"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "title"
+    t.string "body"
     t.index ["user_id"], name: "index_analytics_on_user_id"
   end
 
@@ -37,7 +27,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_30_030004) do
     t.string "agent_response"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["analytic_id"], name: "index_analytics_chats_on_analytic_id"
+    t.string "analytic_type"
+    t.index ["analytic_id", "analytic_type"], name: "index_analytics_chats_on_analytic", unique: true
   end
 
   create_table "context_annotation_domains", force: :cascade do |t|
@@ -92,7 +83,27 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_30_030004) do
     t.integer "user_profile_clicks"
     t.integer "engagements"
     t.string "url"
+    t.string "x_username"
+    t.integer "x_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
+  end
+
+  create_table "public_analytics", force: :cascade do |t|
+    t.string "x_username"
+    t.integer "x_id"
+    t.text "popular_tweet"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["x_id"], name: "index_public_analytics_on_x_id"
+  end
+
+  create_table "user_posts", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "post_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_user_posts_on_post_id"
+    t.index ["user_id"], name: "index_user_posts_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -126,4 +137,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_30_030004) do
   add_foreign_key "context_annotation_domains", "posts"
   add_foreign_key "entities_annotations", "posts"
   add_foreign_key "post_mentions", "posts"
+  add_foreign_key "public_analytics", "posts", column: "x_id"
+  add_foreign_key "user_posts", "posts"
+  add_foreign_key "user_posts", "users"
 end

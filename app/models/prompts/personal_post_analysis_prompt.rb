@@ -1,7 +1,7 @@
 require 'json'
 
 module Prompts
-  class PostAnalysisPrompt
+  class PersonalPostAnalysisPrompt
     def initialize(user)
       @user = user
       @posts = user.posts.includes(:context_annotation_domains, :entities_annotations, :post_mentions)
@@ -35,11 +35,13 @@ module Prompts
       JSON.pretty_generate(prompt_hash)
     end
 
-    def system_prompt
-      <<~SYSTEM_PROMPT
-        You are analyzing a series of post metrics for a user on X (formerly Twitter). These posts are sorted by
-        the impressions, from highest to lowest.
-      SYSTEM_PROMPT
+    def system_prompt_generator(analytic_title)
+      case analytic_title
+      when "top_overall"
+        system_prompt_preambale + top_overall_post_preamble
+      when "worst_overall"
+        system_prompt_preambale + worst_overall_post
+      end
     end
 
     private
@@ -62,6 +64,31 @@ module Prompts
           "Mentioned Username" => mention.mentioned_username
         }
       end
+    end
+
+    def system_prompt_preambale
+      <<~SYSTEM_PROMPT
+        You are analyzing a series of post metrics for a user on X (formerly Twitter). You are speaking with #{@user.x_username} who's full name
+        is #{@user.name}. #{@user.name} would like to know the following about their Twitter / X post data. Respond in maximum five sentences. Draw
+        specific analyses with examples and evidence. You are only to analyze the information provided to you. When responding, personalzie the response using the "your" when referring
+        to the user's posts.
+
+        The topic the user would you like to analyze is:
+      SYSTEM_PROMPT
+    end
+
+    def top_overall_post_preamble
+      <<~SYSTEM_PROMPT
+        Which posts performed the best in terms of impressions, likes, retweets, bookmarks, and replies? Which posts were close? Why did
+        these posts perform so well?
+      SYSTEM_PROMPT
+    end
+
+    def worst_overall_post
+    <<~SYSTEM_PROMPT
+        Which posts performed the worst in terms of impressions, likes, retweets, bookmarks, and replies? Which posts were close? Why did
+        these posts perform so bad?
+      SYSTEM_PROMPT
     end
   end
 end

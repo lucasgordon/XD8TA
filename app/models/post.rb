@@ -1,5 +1,5 @@
 class Post < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, optional: true
 
   validates :post_id, uniqueness: true
 
