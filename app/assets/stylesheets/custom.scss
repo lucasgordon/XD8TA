@@ -12,3 +12,10 @@ body {
     color: $primary;
     font-family: 'BerkeleyMono', monospace; // Now using the custom font
 }
+
+.chat-message {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }

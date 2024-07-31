@@ -56,7 +56,7 @@ class UsersController < ApplicationController
 
   def regenerate_analytics
     @user = current_user
-    @user.analytics.delete_all
+    @user.analytics.destroy_all
     @user.generate_analytics
     redirect_to analytics_user_path(current_user)
   end

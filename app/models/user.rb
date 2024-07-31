@@ -27,6 +27,12 @@ class User < ApplicationRecord
         body = fetch_analysis(title)
 
         analytic.update!(body: body)
+
+        AnalyticsChat.create!(
+          user: self,
+          analytic: analytic,
+          prompt_temperature: 0.5,
+        )
       end
     end
   end

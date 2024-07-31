@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_30_203203) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_31_015711) do
   create_table "analytics", force: :cascade do |t|
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
@@ -22,13 +22,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_30_203203) do
 
   create_table "analytics_chats", force: :cascade do |t|
     t.integer "analytic_id", null: false
-    t.string "user_prompt"
     t.string "prompt_temperature"
-    t.string "agent_response"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "analytic_type"
+    t.integer "user_id", null: false
     t.index ["analytic_id", "analytic_type"], name: "index_analytics_chats_on_analytic", unique: true
+    t.index ["user_id"], name: "index_analytics_chats_on_user_id"
   end
 
   create_table "context_annotation_domains", force: :cascade do |t|
@@ -52,6 +52,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_30_203203) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_entities_annotations_on_post_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.integer "analytics_chat_id", null: false
+    t.string "agent_response"
+    t.string "user_prompt"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["analytics_chat_id"], name: "index_messages_on_analytics_chat_id"
   end
 
   create_table "post_mentions", force: :cascade do |t|
@@ -134,8 +143,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_30_203203) do
 
   add_foreign_key "analytics", "users"
   add_foreign_key "analytics_chats", "analytics"
+  add_foreign_key "analytics_chats", "users"
   add_foreign_key "context_annotation_domains", "posts"
   add_foreign_key "entities_annotations", "posts"
+  add_foreign_key "messages", "analytics_chats"
   add_foreign_key "post_mentions", "posts"
   add_foreign_key "public_analytics", "posts", column: "x_id"
   add_foreign_key "user_posts", "posts"
