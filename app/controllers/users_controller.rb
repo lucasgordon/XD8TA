@@ -56,9 +56,11 @@ class UsersController < ApplicationController
 
   def regenerate_analytics
     @user = current_user
-    @user.analytics.destroy_all
-    @user.generate_analytics
-    redirect_to analytics_user_path(current_user)
+    ActiveRecord::Base.transaction do
+      @user.analytics.destroy_all
+      @user.generate_analytics
+    end
+    redirect_to analytics_user_path(@user)
   end
 
 

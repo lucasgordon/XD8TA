@@ -6,14 +6,18 @@ class AnalyticsChatsController < ApplicationController
     @messages = @analytics_chat.messages
     @message = Message.new
     @analytic = @analytics_chat.analytic
+    @analytic_body = @analytic.body
+
+    @username = @analytics_chat.analytic.user ? @analytics_chat.analytic.user.x_username : @analytics_chat.analytic.x_username
   end
 
   def create_message
+
     @message = @analytics_chat.messages.build(message_params)
     if @message.save
-      #response = PromptService.get_response(@message.user_prompt)
-      #@message.update(agent_response: response)
-      redirect_to analytics_chat_path(@analytics_chat), notice: 'Message was successfully created.'
+      text_response = @analytics_chat.fetch_chat_response(@message)
+      @message.update(agent_response: text_response)
+      redirect_to analytics_chat_path(@analytics_chat)
     else
       render :show
     end

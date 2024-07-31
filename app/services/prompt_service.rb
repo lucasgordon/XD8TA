@@ -8,6 +8,7 @@ class PromptService
   MODELS = [
     "command-r-plus",
     "claude-3-5-sonnet-20240620",
+    "gpt-4o"
   ].freeze
 
   COHERE_MODELS = [
@@ -15,8 +16,14 @@ class PromptService
   ].freeze
 
   CLAUDE_MODELS = [
-    "claude-3-5-sonnet-20240620"
+  "claude-3-5-sonnet-20240620"
   ].freeze
+
+  OPENAI_MODELS = [
+    "gpt-4o"
+  ].freeze
+
+  MAX_RETRIES = 5
 
   class << self
     def prompt(...)
@@ -36,12 +43,25 @@ class PromptService
   end
 
   def prompt
-    if COHERE_MODELS.include?(@model)
-      cohere_client.chat(**cohere_params)
-    elsif CLAUDE_MODELS.include?(@model)
-      claude_client.messages(parameters: claude_params)
-    else
-      raise "Unsupported model"
+    retries = 0
+    begin
+      if COHERE_MODELS.include?(@model)
+        cohere_client.chat(**cohere_params)
+      elsif CLAUDE_MODELS.include?(@model)
+        claude_client.messages(parameters: claude_params)
+      elsif OPENAI_MODELS.include?(@model)
+        openai_client.chat(parameters: openai_params)
+      else
+        raise "Unsupported model"
+      end
+    rescue Faraday::TooManyRequestsError => e
+      retries += 1
+      if retries < MAX_RETRIES
+        sleep(2**retries)
+        retry
+      else
+        raise e
+      end
     end
   end
 
@@ -52,6 +72,22 @@ class PromptService
   def claude_client
     @claude_client ||= Anthropic::Client.new
   end
+
+  def openai_client
+    @openai_client ||= OpenAI::Client.new
+  end
+
+  def openai_params
+    messages = []
+    messages << { role: "system", content: @system } if @system.present?
+    messages << { role: "user", content: @content }
+    {
+      model: @model,
+      messages: messages,
+      temperature: @temperature,
+    }
+  end
+
 
   def claude_params
     messages = []

@@ -34,6 +34,8 @@ class User < ApplicationRecord
           prompt_temperature: 0.5,
         )
       end
+
+      sleep(5)
     end
   end
 
@@ -42,8 +44,10 @@ class User < ApplicationRecord
   def fetch_analysis(title)
     prompt = Prompts::PersonalPostAnalysisPrompt.new(self)
 
-    response = PromptService.new(content: prompt.user_prompt, system: prompt.system_prompt_generator(title), model: "claude-3-5-sonnet-20240620").prompt
+    response = PromptService.new(content: prompt.user_prompt, system: prompt.system_prompt_generator(title), model: "gpt-4o").prompt
 
-    response["content"].first["text"]
+    # response["content"].first["text"]
+
+    response["choices"][0]["message"]["content"]
   end
 end
