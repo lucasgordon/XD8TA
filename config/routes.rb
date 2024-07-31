@@ -15,6 +15,12 @@ Rails.application.routes.draw do
 
   resources :public_analytics, only: [:show, :index, :new, :create]
 
+  resources :analytics_chats, only: [:show] do
+    member do
+      post :create_message
+    end
+  end
+
   get "sign_up" => "users#new", as: :sign_up
 
   resource :session, only: [:new, :create, :destroy]

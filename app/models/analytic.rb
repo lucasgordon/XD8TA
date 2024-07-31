@@ -1,6 +1,6 @@
 class Analytic < ApplicationRecord
   belongs_to :user
-  has_one :analytics_chat, as: :analytic
+  has_one :analytics_chat, as: :analytic, dependent: :destroy
 
   enum title: {
     top_overall: "Top Overall",

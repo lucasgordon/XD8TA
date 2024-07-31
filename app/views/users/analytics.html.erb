@@ -12,7 +12,8 @@
     <% @analytics.each do |analytic| %>
         <div class="card mb-3 shadow-sm">
             <div class="card-header bg-secondary text-white">
-                <h2 class="h5 card-title mb-0"><%= Analytic.titles[analytic.title] %></h2>
+                <h2 class="h5 card-title mb-0"><%= Analytic.titles[analytic.title] %></h2> 
+                <%= link_to "Chat", analytics_chat_path(analytic.analytics_chat), class: "btn btn-primary btn-sm" %>
             </div>
             <div class="card-body bg-dark">
                 <p class="card-text"><%= analytic.body %></p>
