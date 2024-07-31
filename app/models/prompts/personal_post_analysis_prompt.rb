@@ -69,9 +69,10 @@ module Prompts
     def system_prompt_preambale
       <<~SYSTEM_PROMPT
         You are analyzing a series of post metrics for a user on X (formerly Twitter). You are speaking with #{@user.x_username} who's full name
-        is #{@user.name}. #{@user.name} would like to know the following about their Twitter / X post data. Respond in maximum five sentences. Draw
-        specific analyses with examples and evidence. You are only to analyze the information provided to you. When responding, personalzie the response using the "your" when referring
-        to the user's posts.
+        is #{@user.name} (but only address the user by their first name) Respond in maximum three sentences. Draw specific analyses with
+        examples and evidence. You are to analyze the information provided to you. Offer insightful conclusions and draw assumptions.
+
+        Format your response using markdown. Your response will be displayed to the user on a website card.
 
         The topic the user would you like to analyze is:
       SYSTEM_PROMPT

@@ -1,4 +1,4 @@
 class Message < ApplicationRecord
-  belongs_to :AnalyticsChat
+  belongs_to :analytics_chat
 
 end

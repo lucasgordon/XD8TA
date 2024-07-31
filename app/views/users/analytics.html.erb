@@ -13,10 +13,14 @@
         <div class="card mb-3 shadow-sm">
             <div class="card-header bg-secondary text-white">
                 <h2 class="h5 card-title mb-0"><%= Analytic.titles[analytic.title] %></h2> 
-                <%= link_to "Chat", analytics_chat_path(analytic.analytics_chat), class: "btn btn-primary btn-sm" %>
+                <% if analytic.analytics_chat %>
+                    <%= link_to "Chat", analytics_chat_path(analytic.analytics_chat), class: "btn btn-primary btn-sm" %>'
+                <% end %>
             </div>
             <div class="card-body bg-dark">
-                <p class="card-text"><%= analytic.body %></p>
+                <% if analytic.body %>
+                    <p class="card-text"><%= markdown(analytic.body) %></p>
+                <% end %>
             </div>
         </div>
     <% end %>

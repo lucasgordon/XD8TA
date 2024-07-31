@@ -10,12 +10,45 @@
 body {
     background-color: $bg-dark;
     color: $primary;
-    font-family: 'BerkeleyMono', monospace; // Now using the custom font
+    font-family: 'BerkeleyMono', monospace; 
 }
 
-.chat-message {
-    margin-bottom: 10px;
-    padding: 10px;
+.chat-history-container {
+  overflow-y: auto; 
+  height: calc(100vh - 150px); 
+  position: relative;
+}
+
+.chat-input-container {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 1000; 
+}
+  
+  .chat-history {
+    overflow-y: auto;
+    height: calc(100vh - 140px); 
+    padding-bottom: 100px; 
+  }
+  
+  .user-message {
+    max-width: 60%;
+    word-wrap: break-word;
+  }
+  
+  .agent-message {
+    background-color: #e9ecef;
+    color: #333;
+    max-width: 60%;
+    word-wrap: break-word;
+  }
+  
+  .form-control {
     border: 1px solid #ccc;
-    border-radius: 5px;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
   }

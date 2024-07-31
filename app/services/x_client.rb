@@ -7,6 +7,7 @@ class XClient
 
   def initialize(user)
     @user = user
+    @x_id = @user.x_id
   end
 
   def fetch_user_information(user)
@@ -35,85 +36,87 @@ class XClient
   end
 
   def fetch_private_metrics
-    url = "#{BASE_URL}#{@x_id}/tweets?max_results=30" +
+    url = "#{BASE_URL}#{@x_id}/tweets?max_results=5" +
     "&tweet.fields=id,text,attachments,author_id,context_annotations,conversation_id,non_public_metrics,created_at,entities,geo,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,withheld" +
-    "&expansions=attachments.poll_ids,attachments.media_keys,author_id,referenced_tweets.id,referenced_tweets.id.author_id,in_reply_to_user_id"
+    "&expansions=attachments.poll_ids,attachments.media_keys,author_id,referenced_tweets.id,referenced_tweets.id.author_id,in_reply_to_user_id" +
+    "&user.fields=username"
     data = fetch_twitter_data(url, {})
     save_metrics(data)
   end
 
   def fetch_public_metrics
-    url = "#{BASE_URL}#{@x_id}/tweets?max_results=30" +
+    url = "#{BASE_URL}#{@x_id}/tweets?max_results=100" +
     "&tweet.fields=id,text,attachments,author_id,context_annotations,conversation_id,created_at,entities,geo,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,withheld" +
-    "&expansions=attachments.poll_ids,attachments.media_keys,author_id,referenced_tweets.id,referenced_tweets.id.author_id,in_reply_to_user_id"
+    "&expansions=attachments.poll_ids,attachments.media_keys,author_id,referenced_tweets.id,referenced_tweets.id.author_id,in_reply_to_user_id" +
+    "&user.fields=username"
     data = fetch_twitter_data(url, {})
     save_metrics(data)
   end
 
   def save_metrics(data)
     if data['data'] && !data['data'].empty?
-
       data['data'].each do |tweet|
         next if tweet['text'].include? "RT @"
 
-        post = Post.find_or_create_by(post_id: tweet['id']) do |p|
-          p.user_id = @user.id if tweet['username'].downcase == @username.downcase
-          p.text = tweet['text']
-          p.x_username = tweet['username']
-          p.x_id = tweet['author_id']
-          p.retweet_count = tweet['public_metrics']['retweet_count']
-          p.reply_count = tweet['public_metrics']['reply_count']
-          p.like_count = tweet['public_metrics']['like_count']
-          p.quote_count = tweet['public_metrics']['quote_count']
-          p.bookmark_count = tweet['public_metrics']['bookmark_count'] || 0
-          p.impression_count = tweet['public_metrics']['impression_count'] || 0
-          p.post_created_at = tweet['created_at']
-          p.lang = tweet['lang']
-          p.in_reply_to_user_id = tweet['in_reply_to_user_id']
-          p.url = "https://x.com/#{@user.x_username}/status/#{tweet['id']}"
+        post = Post.find_or_initialize_by(post_id: tweet['id'])
+        post.user_id = @user.id
+        post.text = tweet['text']
+        post.x_username = @user.x_username
+        post.x_id = tweet['author_id']
+        post.retweet_count = tweet['public_metrics']['retweet_count']
+        post.reply_count = tweet['public_metrics']['reply_count']
+        post.like_count = tweet['public_metrics']['like_count']
+        post.quote_count = tweet['public_metrics']['quote_count']
+        post.bookmark_count = tweet['public_metrics']['bookmark_count'] || 0
+        post.impression_count = tweet['public_metrics']['impression_count'] || 0
+        post.post_created_at = tweet['created_at']
+        post.lang = tweet['lang']
+        post.in_reply_to_user_id = tweet['in_reply_to_user_id']
+        post.url = "https://x.com/#{@user.x_username}/status/#{tweet['id']}"
 
-          if tweet['non_public_metrics']
-            p.engagements = tweet['non_public_metrics']['engagements'] || 0
-            p.user_profile_clicks = tweet['non_public_metrics']['user_profile_clicks'] || 0
-          else
-            p.engagements = 0
-            p.user_profile_clicks = 0
-          end
+        if tweet['non_public_metrics']
+          post.engagements = tweet['non_public_metrics']['engagements'] || 0
+          post.user_profile_clicks = tweet['non_public_metrics']['user_profile_clicks'] || 0
+        else
+          post.engagements = 0
+          post.user_profile_clicks = 0
         end
 
-        # Create PostMention records if any
+        post.save
+
+        # Create or update PostMention records
         if tweet['entities'] && tweet['entities']['mentions']
           tweet['entities']['mentions'].each do |mention|
-            post.post_mentions.find_or_create_by(mentioned_user_id: mention['id']) do |pm|
-              pm.mentioned_username = mention['username']
-              pm.start_location = mention['start']
-              pm.end_location = mention['end']
-            end
+            post_mention = post.post_mentions.find_or_initialize_by(mentioned_user_id: mention['id'])
+            post_mention.mentioned_username = mention['username']
+            post_mention.start_location = mention['start']
+            post_mention.end_location = mention['end']
+            post_mention.save
           end
         end
 
-        # Create EntitiesAnnotation records if any
+        # Create or update EntitiesAnnotation records
         if tweet['entities'] && tweet['entities']['annotations']
           tweet['entities']['annotations'].each do |annotation|
-            post.entities_annotations.find_or_create_by(normalized_text: annotation['normalized_text']) do |ea|
-              ea.start_location = annotation['start']
-              ea.end_location = annotation['end']
-              ea.probability = annotation['probability']
-              ea.annotation_type = annotation['type']
-            end
+            entities_annotation = post.entities_annotations.find_or_initialize_by(normalized_text: annotation['normalized_text'])
+            entities_annotation.start_location = annotation['start']
+            entities_annotation.end_location = annotation['end']
+            entities_annotation.probability = annotation['probability']
+            entities_annotation.annotation_type = annotation['type']
+            entities_annotation.save
           end
-          end
+        end
 
-        # Create ContextAnnotationDomain records if any
+        # Create or update ContextAnnotationDomain records
         if tweet['context_annotations']
           tweet['context_annotations'].each do |context|
             entity = context['entity']
             if entity
-              post.context_annotation_domains.find_or_create_by(entity_name: entity['name']) do |cad|
-                cad.domain_name = context['domain']['name']
-                cad.domain_description = context['domain']['description']
-                cad.entity_description = entity['description']
-              end
+              context_annotation_domain = post.context_annotation_domains.find_or_initialize_by(entity_name: entity['name'])
+              context_annotation_domain.domain_name = context['domain']['name']
+              context_annotation_domain.domain_description = context['domain']['description']
+              context_annotation_domain.entity_description = entity['description']
+              context_annotation_domain.save
             end
           end
         end
