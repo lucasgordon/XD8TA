@@ -1,6 +1,6 @@
 <div id="chat-container" data-controller="chat" class="d-flex flex-column" style="height: calc(100vh - 80px);">
   <div class="chat-header bg-dark border-bottom border-secondary p-3">
-    <h2 class="text-primary m-0">Chat with @<%= chat.x_username %></h2>
+    <h4 class="text-muted m-0">Chat about @<%= chat.x_username %></h4>
   </div>
 
   <div id="chat-history" class="chat-history-container flex-grow-1 overflow-auto p-4" data-chat-target="messages">
@@ -9,14 +9,15 @@
         <%= render partial: 'message', locals: { message: message } %>
       <% end %>
     </div>
+    <div id="thinking-message"></div>
   </div>
 
   <div class="chat-input-container bg-dark border-top border-secondary p-3">
     <%= form_with(model: [chat, chat.messages.build], url: create_message_analytics_chat_path(chat), local: false, html: { class: "input-form", data: { action: "submit->chat#handleSubmit" } }) do |form| %>
       <div class="input-group">
-        <%= form.text_field :user_prompt, class: 'form-control bg-secondary text-light', placeholder: "Ask anything about @#{chat.x_username}'s analytics", aria_label: "Message input", data: { chat_target: "input" } %>
+        <%= form.text_field :user_prompt, class: 'form-control bg-secondary text-light rounded-0', placeholder: "Ask anything about @#{chat.x_username}'s analytics", aria_label: "Message input", data: { chat_target: "input" } %>
         <div class="input-group-append">
-          <%= form.submit 'Send', class: 'btn btn-primary' %>
+          <%= form.submit 'Send', class: 'btn btn-primary mx-3 rounded-0' %>
         </div>
       </div>
     <% end %>

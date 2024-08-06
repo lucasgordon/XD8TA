@@ -7,8 +7,8 @@ class AnalyticsChatsController < ApplicationController
 
     @message = @analytics_chat.messages.build(message_params)
     if @message.save
-      text_response = @analytics_chat.fetch_chat_response(@message)
-      @message.update(agent_response: text_response)
+
+      call_agent_response
 
       respond_to do |format|
         format.turbo_stream
@@ -16,9 +16,22 @@ class AnalyticsChatsController < ApplicationController
     end
   end
 
+  def call_agent_response
+    text_response = @analytics_chat.fetch_chat_response(@message)
+    @message.update(agent_response: text_response)
+
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
   def create
-    @analytics_chat = current_user.analytics_chats.create!(chat_type: params[:chat_type], prompt_temperature: 0.5, x_id: params[:x_id], x_username: params[:x_username])
-    redirect_to analytics_user_path(current_user, chat_id: @analytics_chat.id)
+    @chats = current_user.analytics_chats.where(chat_type: "Personal").order(created_at: :desc)
+    @new_chat = current_user.analytics_chats.create!(chat_type: params[:chat_type], prompt_temperature: 0.5, x_id: params[:x_id], x_username: params[:x_username])
+    respond_to do |format|
+      format.html { redirect_to analytics_user_path(current_user, chat_id: @new_chat.id) }
+      format.turbo_stream
+    end
   end
 
 

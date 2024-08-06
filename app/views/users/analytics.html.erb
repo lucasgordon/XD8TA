@@ -2,8 +2,7 @@
   <div class="container-fluid bg-dark text-light" style="height: calc(100vh - 70px);">
     <div class="row h-100">
       <div class="col-md-3 bg-dark border-end border-secondary p-4 overflow-auto" style="height: 100%;">
-        <h3 class="mb-4 text-primary">Chat History</h3>
-        <%= button_to "New Chat", analytics_chats_path(chat_type: "Personal", x_id: current_user.x_id, x_username: current_user.x_username), method: :post, class: "btn btn-outline-primary mb-4 w-100" %>
+        <%= button_to "New Chat", analytics_chats_path(chat_type: "Personal", x_id: current_user.x_id, x_username: current_user.x_username), method: :post, class: "rounded-0 btn btn-outline-secondary mb-4 w-100", data: { turbo_frame: "chat" } %>        
         <%= render partial: 'chat_history', locals: { chats: @chats, current_chat: @current_chat } %>
       </div>
 
