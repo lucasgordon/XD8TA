@@ -4,22 +4,21 @@ export default class extends Controller {
   static targets = [ "messages", "input" ]
 
   connect() {
-    this.element.addEventListener("turbo:submit-end", this.handleSubmit.bind(this))
     this.scrollToBottom()
+    this.inputTarget.focus()
+    this.element.addEventListener("turbo:submit-end", this.handleSubmit.bind(this))
   }
 
   handleSubmit(event) {
     if (event.detail && event.detail.success) {
       this.inputTarget.value = ""
       this.inputTarget.focus()
-      setTimeout(() => {
-        this.scrollToBottom()
-      }, 100)
+      this.scrollToBottom()
     }
   }
 
   scrollToBottom() {
-    const chatHistory = this.messagesTarget
-    chatHistory.scrollTop = chatHistory.scrollHeight
+    const chatHistory = this.messagesTarget;
+    chatHistory.scrollTop = chatHistory.scrollHeight;
   }
 }
