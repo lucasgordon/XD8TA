@@ -34,6 +34,23 @@ class AnalyticsChatsController < ApplicationController
     end
   end
 
+  def reset_chat
+    @analytics_chat = AnalyticsChat.find(params[:id])
+    @analytics_chat.messages.destroy_all
+
+    respond_to do |format|
+      format.html { redirect_to analytics_user_path(current_user, chat_id: @analytics_chat.id) }
+    end
+  end
+
+  def destroy
+    @analytics_chat = AnalyticsChat.find(params[:id])
+    @analytics_chat.destroy
+    respond_to do |format|
+      format.html { redirect_to analytics_user_path(current_user) }
+    end
+  end
+
 
   private
 
