@@ -8,14 +8,12 @@ Rails.application.routes.draw do
       get :fetch_posts_private_metrics
       get :fetch_posts_public_metrics
       get :analytics
-      get :generate_analytics
-      get :regenerate_analytics
     end
   end
 
   resources :public_analytics, only: [:show, :index, :new, :create]
 
-  resources :analytics_chats, only: [:show] do
+  resources :analytics_chats, only: [:create] do
     member do
       post :create_message
     end

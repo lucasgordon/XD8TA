@@ -2,14 +2,6 @@ class AnalyticsChatsController < ApplicationController
 
   before_action :set_analytics_chat, only: [:show, :create_message]
 
-  def show
-    @messages = @analytics_chat.messages
-    @message = Message.new
-    @analytic = @analytics_chat.analytic
-    @analytic_body = @analytic.body
-
-    @username = @analytics_chat.analytic.user ? @analytics_chat.analytic.user.x_username : @analytics_chat.analytic.x_username
-  end
 
   def create_message
 
@@ -17,10 +9,16 @@ class AnalyticsChatsController < ApplicationController
     if @message.save
       text_response = @analytics_chat.fetch_chat_response(@message)
       @message.update(agent_response: text_response)
-      redirect_to analytics_chat_path(@analytics_chat)
-    else
-      render :show
+
+      respond_to do |format|
+        format.turbo_stream
+      end
     end
+  end
+
+  def create
+    @analytics_chat = current_user.analytics_chats.create!(chat_type: params[:chat_type], prompt_temperature: 0.5, x_id: params[:x_id], x_username: params[:x_username])
+    redirect_to analytics_user_path(current_user, chat_id: @analytics_chat.id)
   end
 
 
@@ -28,10 +26,6 @@ class AnalyticsChatsController < ApplicationController
 
   def set_analytics_chat
     @analytics_chat = AnalyticsChat.find(params[:id])
-  end
-
-  def analytics_chat_params
-    params.require(:analytics_chat).permit(:prompt_temperature, :user_id, :analytic_id, :analytic_type)
   end
 
   def message_params

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_31_015711) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_05_224306) do
   create_table "analytics", force: :cascade do |t|
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
@@ -21,13 +21,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_31_015711) do
   end
 
   create_table "analytics_chats", force: :cascade do |t|
-    t.integer "analytic_id", null: false
     t.string "prompt_temperature"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "analytic_type"
     t.integer "user_id", null: false
-    t.index ["analytic_id", "analytic_type"], name: "index_analytics_chats_on_analytic", unique: true
+    t.string "x_username"
+    t.integer "x_id"
+    t.string "chat_type"
     t.index ["user_id"], name: "index_analytics_chats_on_user_id"
   end
 
@@ -142,7 +142,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_31_015711) do
   end
 
   add_foreign_key "analytics", "users"
-  add_foreign_key "analytics_chats", "analytics"
   add_foreign_key "analytics_chats", "users"
   add_foreign_key "context_annotation_domains", "posts"
   add_foreign_key "entities_annotations", "posts"

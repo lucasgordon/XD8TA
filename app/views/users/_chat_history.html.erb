@@ -1,0 +1,7 @@
+<div class="list-group">
+    <% chats.each do |chat| %>
+      <%= link_to analytics_user_path(current_user, chat_id: chat.id), class: "list-group-item list-group-item-action", data: { turbo_frame: "chat" } do %>
+        <%= chat.created_at.strftime("%B %d, %Y") %>
+      <% end %>
+    <% end %>
+  </div>

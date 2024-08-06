@@ -1,27 +1,15 @@
-<div class="container mt-5">
-    <h1 class="text-center mb-4">Analytics Dashboard</h1>
-
-    <div class="d-flex justify-content-center mb-4">
-        <% if @user.analytics.any? %>
-            <%= link_to "Regenerate Analytics", regenerate_analytics_user_path(current_user), class: "btn btn-primary" %>
-        <% else %>
-            <%= link_to "Generate Analytics", generate_analytics_user_path(current_user), class: "btn btn-primary" %>
-        <% end %>
-    </div>
-
-    <% @analytics.each do |analytic| %>
-        <div class="card mb-3 shadow-sm">
-            <div class="card-header bg-secondary text-white">
-                <h2 class="h5 card-title mb-0"><%= Analytic.titles[analytic.title] %></h2> 
-                <% if analytic.analytics_chat %>
-                    <%= link_to "Chat", analytics_chat_path(analytic.analytics_chat), class: "btn btn-primary btn-sm" %>'
-                <% end %>
-            </div>
-            <div class="card-body bg-dark">
-                <% if analytic.body %>
-                    <p class="card-text"><%= markdown(analytic.body) %></p>
-                <% end %>
-            </div>
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-md-3 bg-light sidebar">
+        <h3 class="mt-3 mb-4">Chat History</h3>
+        <%= button_to "New Chat", analytics_chats_path(chat_type: "Personal", x_id: current_user.x_id, x_username: current_user.x_username), method: :post, class: "btn btn-primary mb-2" %>
+        <%= render partial: 'chat_history', locals: { chats: @chats, current_chat: @current_chat } %>
+      </div>
+  
+      <div class="col-md-9">
+        <div id="chat-container" data-controller="chat">
+          <%= render partial: 'chat', locals: { chat: @current_chat } %>
         </div>
-    <% end %>
-</div>
+      </div>
+    </div>
+  </div>

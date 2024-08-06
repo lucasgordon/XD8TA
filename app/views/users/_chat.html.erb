@@ -1,0 +1,24 @@
+<%= turbo_frame_tag "chat" do %>
+<div id="chat-container" data-controller="chat" data-turbo-permanent>
+  <h1 class="text-center my-4">Chat</h1>
+
+    <div class="chat-history-container" style="height: 70vh; overflow-y: auto;">
+      <div id="chat-messages" class="chat-history p-3" data-chat-target="messages">
+        <% chat.messages.each do |message| %>
+          <%= render partial: 'message', locals: { message: message, animate: false } %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="chat-input-container bg-light p-3">
+      <%= form_with(model: [chat, chat.messages.build], url: create_message_analytics_chat_path(chat), local: false, html: { class: "input-form", data: { action: "submit->chat#handleSubmit" } }) do |form| %>
+        <div class="input-group">
+          <%= form.text_field :user_prompt, class: 'form-control', placeholder: "Ask anything about @#{chat.x_username}'s analytics", aria_label: "Message input", data: { chat_target: "input" } %>
+          <div class="input-group-append">
+            <%= form.submit 'Send', class: 'btn btn-primary' %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
