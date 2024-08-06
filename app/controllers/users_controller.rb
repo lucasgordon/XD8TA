@@ -45,12 +45,14 @@ class UsersController < ApplicationController
 
   def analytics
     @user = current_user
-    @chats = @user.analytics_chats.where(chat_type: "Personal")
+    @chats = @user.analytics_chats.where(chat_type: "Personal").order(created_at: :desc)
     @current_chat = if params[:chat_id]
                       @chats.find(params[:chat_id])
                     else
                       @chats.last || @user.analytics_chats.create!(chat_type: "Personal", prompt_temperature: 0.5, x_id: @user.x_id, x_username: @user.x_username)
                     end
+
+    render "analytics"
   end
 
 
