@@ -1,42 +1,42 @@
-<div class="container mt-5">
-  <h1 class="text-white mb-4">Posts</h1>
-  <div class="table-responsive shadow-lg rounded" data-controller="sortable-table">
-      <table class="table table-dark table-hover border border-light" data-sortable-table-target="table">
-          <thead class="thead-dark">
-              <tr>
-                  <!-- Add click action to sort by specific column -->
-                  <th scope="col" data-action="click->sortable-table#sortRowsByColumn">URL</th>
-                  <th scope="col" data-action="click->sortable-table#sortRowsByColumn">Post ID</th>
-                  <th scope="col" data-action="click->sortable-table#sortRowsByColumn">Text</th>
-                  <th scope="col" data-action="click->sortable-table#sortRowsByColumn">Retweet Count</th>
-                  <th scope="col" data-action="click->sortable-table#sortRowsByColumn">Reply Count</th>
-                  <th scope="col" data-action="click->sortable-table#sortRowsByColumn">Like Count</th>
-                  <th scope="col" data-action="click->sortable-table#sortRowsByColumn">Quote Count</th>
-                  <th scope="col" data-action="click->sortable-table#sortRowsByColumn">Bookmark Count</th>
-                  <th scope="col" data-action="click->sortable-table#sortRowsByColumn">Impression Count</th>
-                  <th scope="col" data-action="click->sortable-table#sortRowsByColumn">Engagements</th>
-                  <th scope="col" data-action="click->sortable-table#sortRowsByColumn">User Profile Clicks</th>
-                  <th scope="col" data-action="click->sortable-table#sortRowsByColumn">Post Created At</th>
-              </tr>
-          </thead>
-          <tbody>
-              <% @posts.each do |post| %>
-                  <tr>
-                      <td><a href="<%= post.url %>" target="_blank" class="text-info">View Post</a></td>
-                      <td><%= post.post_id %></td>
-                      <td><%= post.text %></td>
-                      <td><%= post.retweet_count %></td>
-                      <td><%= post.reply_count %></td>
-                      <td><%= post.like_count %></td>
-                      <td><%= post.quote_count %></td>
-                      <td><%= post.bookmark_count %></td>
-                      <td><%= post.impression_count %></td>
-                      <td><%= post.engagements %></td>
-                      <td><%= post.user_profile_clicks %></td>
-                      <td><%= post.post_created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
-                  </tr>
-              <% end %>
-          </tbody>
-      </table>
-  </div>
+<div class="container-fluid bg-dark">
+    <div class="container mt-5">
+    <h4 class="text-white mb-4 text-muted">@<%= @user.x_username %> posts</h4>
+    <div class="table-responsive shadow-lg rounded" data-controller="sortable-table">
+        <table class="table table-dark table-hover border border-light" data-sortable-table-target="table">
+            <thead class="thead-dark">
+                <tr>
+                    <!-- Add click action to sort by specific column -->
+                    <th scope="col" data-action="click->sortable-table#sortRowsByColumn">URL</th>
+                    <th scope="col" data-action="click->sortable-table#sortRowsByColumn">Text</th>
+                    <th scope="col" data-action="click->sortable-table#sortRowsByColumn">Retweet Count</th>
+                    <th scope="col" data-action="click->sortable-table#sortRowsByColumn">Reply Count</th>
+                    <th scope="col" data-action="click->sortable-table#sortRowsByColumn">Like Count</th>
+                    <th scope="col" data-action="click->sortable-table#sortRowsByColumn">Quote Count</th>
+                    <th scope="col" data-action="click->sortable-table#sortRowsByColumn">Bookmark Count</th>
+                    <th scope="col" data-action="click->sortable-table#sortRowsByColumn">Impression Count</th>
+                    <th scope="col" data-action="click->sortable-table#sortRowsByColumn">Engagements</th>
+                    <th scope="col" data-action="click->sortable-table#sortRowsByColumn">User Profile Clicks</th>
+                    <th scope="col" data-action="click->sortable-table#sortRowsByColumn">Post Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% @posts.each do |post| %>
+                    <tr>
+                        <td><a href="<%= post.url %>" target="_blank" class="text-info">View Post</a></td>
+                        <td><%= post.text %></td>
+                        <td><%= post.retweet_count %></td>
+                        <td><%= post.reply_count %></td>
+                        <td><%= post.like_count %></td>
+                        <td><%= post.quote_count %></td>
+                        <td><%= post.bookmark_count %></td>
+                        <td><%= post.impression_count %></td>
+                        <td><%= post.engagements %></td>
+                        <td><%= post.user_profile_clicks %></td>
+                        <td><%= post.post_created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+    </div>
 </div>

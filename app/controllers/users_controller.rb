@@ -29,6 +29,7 @@ class UsersController < ApplicationController
 
   def posts
     @posts = current_user.posts
+    @user = current_user
   end
 
   def fetch_posts_private_metrics
