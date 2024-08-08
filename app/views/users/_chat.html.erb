@@ -1,0 +1,40 @@
+<div id="chat-container" data-controller="chat" class="d-flex flex-column" style="height: calc(100vh - 80px);">
+  <div class="chat-header bg-dark border-bottom border-secondary p-3 d-flex justify-content-between">
+    <div>
+      <div class="nav-item dropdown w-100">
+        <a class="nav-link dropdown-toggle text-muted d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <h4 class="m-0">Chat about @<%= chat.x_username %></h4>
+        </a>
+        <ul class="dropdown-menu mt-3 p-0 mx-0" aria-labelledby="navbarDropdown" data-bs-theme="dark">
+          <%= link_to "Reset Chat", reset_chat_analytics_chat_path(chat), class: "dropdown-item", data: { turbo_frame: "chat_frame" } %>
+          <li><%= button_to "Delete Chat", analytics_chat_path(chat), method: :delete, data: { confirm: "Are you sure?" }, class: "dropdown-item" %></li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <%= link_to "View Posts", post_path(x_username: chat.x_username, analytic_chat: chat.id), class: "btn btn-outline-secondary rounded-0", data: { turbo_frame: "_top" } %>
+    </div>
+  </div>
+
+  <div id="chat-history" class="chat-history-container flex-grow-1 overflow-auto p-4" data-chat-target="messages">
+    <%= turbo_frame_tag "chat_frame" do %>
+      <div id="chat-messages" class="chat-history">
+        <% chat.messages.each do |message| %>
+          <%= render partial: 'users/message', locals: { message: message } %>
+        <% end %>
+      </div>
+    <% end %>
+    <div id="thinking-message"></div>
+  </div>
+
+  <div class="chat-input-container bg-dark border-top border-secondary p-3">
+    <%= form_with(model: [chat, chat.messages.build], url: create_message_analytics_chat_path(chat), local: false, html: { class: "input-form", data: { action: "submit->chat#handleSubmit" } }) do |form| %>
+        <div class="input-group">
+          <%= form.text_field :user_prompt, class: 'form-control bg-secondary text-light rounded-0', placeholder: "Ask anything about @#{chat.x_username}'s analytics", aria_label: "Message input", data: { chat_target: "input" } %>
+          <div class="input-group-append">
+            <%= form.submit 'Send', class: 'btn btn-primary mx-3 rounded-0', data: { chat_target: "submit" } %>
+          </div>
+        </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+<%= turbo_stream.replace "chat" do %>
+      <%= render partial: 'users/chat', locals: { chat: @new_chat } %>
+<% end %>
+
+<%= turbo_stream.replace "chat-history" do %>
+    <%= render partial: 'users/chat_history', locals: { chats: @chats, current_chat: @new_chat } %>
+<% end %>

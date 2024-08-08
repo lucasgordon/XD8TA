@@ -8,7 +8,7 @@ class User < ApplicationRecord
 
   has_many :posts
 
-  has_many :analytics, dependent: :destroy
+  has_many :analytics_chats
 
   after_create :fetch_profile_information
 
@@ -40,14 +40,4 @@ class User < ApplicationRecord
   end
 
   private
-
-  def fetch_analysis(title)
-    prompt = Prompts::PersonalPostAnalysisPrompt.new(self)
-
-    response = PromptService.new(content: prompt.user_prompt, system: prompt.system_prompt_generator(title), model: "gpt-4o").prompt
-
-    # response["content"].first["text"]
-
-    response["choices"][0]["message"]["content"]
-  end
 end

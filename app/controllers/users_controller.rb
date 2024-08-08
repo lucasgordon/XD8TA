@@ -29,6 +29,7 @@ class UsersController < ApplicationController
 
   def posts
     @posts = current_user.posts
+    @user = current_user
   end
 
   def fetch_posts_private_metrics
@@ -45,23 +46,13 @@ class UsersController < ApplicationController
 
   def analytics
     @user = current_user
-    @analytics = @user.analytics
-  end
-
-  def generate_analytics
-    @user = current_user
-    @user.generate_analytics
-    redirect_to analytics_user_path(current_user)
-  end
-
-  def regenerate_analytics
-    @user = current_user
-    ActiveRecord::Base.transaction do
-      @user.analytics.destroy_all
-      @user.generate_analytics
+    @chats = @user.analytics_chats.order(created_at: :desc)
+    @current_chat = if params[:chat_id]
+                      @chats.find(params[:chat_id])
+                    else
+                      @chats.first || @user.analytics_chats.create!(chat_type: "Personal", prompt_temperature: 0.5, x_id: @user.x_id, x_username: @user.x_username)
+                    end
     end
-    redirect_to analytics_user_path(@user)
-  end
 
 
   private

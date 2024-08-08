@@ -1,0 +1,10 @@
+<div class="d-flex justify-content-end mb-3">
+  <div class="user-message bg-primary text-white p-2 mw-75 rounded">
+    <%= message.user_prompt %>
+  </div>
+</div>
+<div class="d-flex justify-content-start w-75 mb-3">
+  <div class="agent-message bg-secondary text-white p-2 rounded">
+    <%= markdown(message.agent_response) if message.agent_response %>
+  </div>
+</div>

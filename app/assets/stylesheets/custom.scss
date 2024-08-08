@@ -14,9 +14,8 @@ body {
 }
 
 .chat-history-container {
-  overflow-y: auto; 
-  height: calc(100vh - 150px); 
-  position: relative;
+  max-height: calc(100vh - 200px); /* Adjust as needed */
+  overflow-y: auto;
 }
 
 .chat-input-container {

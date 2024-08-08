@@ -5,9 +5,15 @@ require 'simple_oauth'
 class XClient
   BASE_URL = "https://api.twitter.com/2/users/"
 
-  def initialize(user)
-    @user = user
-    @x_id = @user.x_id
+  def initialize(username)
+    @x_username = username
+    @x_id = fetch_user_x_id(@x_username)
+  end
+
+  def fetch_user_x_id(username)
+    url = "https://api.twitter.com/2/users/by/username/#{username}"
+    data = fetch_twitter_data(url, {})
+    data['data']['id'] if data['data']
   end
 
   def fetch_user_information(user)
@@ -35,15 +41,6 @@ class XClient
     end
   end
 
-  def fetch_private_metrics
-    url = "#{BASE_URL}#{@x_id}/tweets?max_results=5" +
-    "&tweet.fields=id,text,attachments,author_id,context_annotations,conversation_id,non_public_metrics,created_at,entities,geo,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,withheld" +
-    "&expansions=attachments.poll_ids,attachments.media_keys,author_id,referenced_tweets.id,referenced_tweets.id.author_id,in_reply_to_user_id" +
-    "&user.fields=username"
-    data = fetch_twitter_data(url, {})
-    save_metrics(data)
-  end
-
   def fetch_public_metrics
     url = "#{BASE_URL}#{@x_id}/tweets?max_results=100" +
     "&tweet.fields=id,text,attachments,author_id,context_annotations,conversation_id,created_at,entities,geo,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,withheld" +
@@ -59,9 +56,8 @@ class XClient
         next if tweet['text'].include? "RT @"
 
         post = Post.find_or_initialize_by(post_id: tweet['id'])
-        post.user_id = @user.id
         post.text = tweet['text']
-        post.x_username = @user.x_username
+        post.x_username = @x_username
         post.x_id = tweet['author_id']
         post.retweet_count = tweet['public_metrics']['retweet_count']
         post.reply_count = tweet['public_metrics']['reply_count']
@@ -72,7 +68,7 @@ class XClient
         post.post_created_at = tweet['created_at']
         post.lang = tweet['lang']
         post.in_reply_to_user_id = tweet['in_reply_to_user_id']
-        post.url = "https://x.com/#{@user.x_username}/status/#{tweet['id']}"
+        post.url = "https://x.com/#{@x_username}/status/#{tweet['id']}"
 
         if tweet['non_public_metrics']
           post.engagements = tweet['non_public_metrics']['engagements'] || 0

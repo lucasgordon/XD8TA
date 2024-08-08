@@ -8,16 +8,13 @@ Rails.application.routes.draw do
       get :fetch_posts_private_metrics
       get :fetch_posts_public_metrics
       get :analytics
-      get :generate_analytics
-      get :regenerate_analytics
     end
   end
 
-  resources :public_analytics, only: [:show, :index, :new, :create]
-
-  resources :analytics_chats, only: [:show] do
+  resources :analytics_chats, only: [:create, :destroy, :new] do
     member do
       post :create_message
+      get :reset_chat
     end
   end
 
@@ -27,5 +24,5 @@ Rails.application.routes.draw do
   get "sign_in" => "sessions#new", as: :sign_in
   get "sign_out" => "sessions#destroy", as: :sign_out
 
-  resources :posts
+  resources :posts, only: [:show]
 end

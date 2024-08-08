@@ -1,8 +1,9 @@
 class AnalyticsChat < ApplicationRecord
-  belongs_to :analytic, polymorphic: true
   belongs_to :user
 
-  validates :analytic_id, :user_id, presence: true
+  validates :user_id, :chat_type, presence: true
+
+  validates :chat_type, inclusion: { in: ["Personal", "Public"] }
 
   has_many :messages, dependent: :destroy
 

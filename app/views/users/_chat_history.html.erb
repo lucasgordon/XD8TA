@@ -1,0 +1,17 @@
+<div id="chat-history" class="list-group overflow-auto rounded-0" style="overflow-y: auto;">
+  <% chats.each do |chat| %>
+    <%= link_to analytics_user_path(current_user, chat_id: chat.id), 
+      class: "list-group-item list-group-item-action #{'active' if chat == current_chat} text-light border-secondary",
+      data: { turbo_frame: "_top" } do %>
+          <div class="d-flex justify-content-between align-items-center">
+            <% if chat.messages.any? %>
+              <span>@<%= chat.x_username %></span>
+              <small><%= chat.messages.first.user_prompt.truncate(15) %></small>
+            <% else %>
+              <span>@<%= chat.x_username %></span>
+              <small><%= chat.created_at.strftime("%b %d") %></small>
+            <% end %>
+          </div>
+    <% end %>
+  <% end %>
+</div>

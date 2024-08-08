@@ -6,25 +6,24 @@ module Prompts
       @analytic_chat = analytic_chat
       @message_history = analytic_chat.messages
       @username = get_username(@analytic_chat)
-      @analytic = @analytic_chat.analytic
       @posts = Post.where(x_username: @username)
     end
 
     def get_username(analytic_chat)
-      analytic_chat.user ? analytic_chat.user.x_username : analytic_chat.x_username
+      analytic_chat.x_username
     end
 
     def system_prompt
       <<~SYSTEM_PROMPT
         Format your response using markdown. You are analyzing a series of post metrics for a user on X (formerly Twitter). The user would like to know the following about
-        Twitter / X post data for #{@username}. The topic of the conversation is #{Analytic.titles[@analytic.title]}.
+        Twitter / X post data for #{@username}.
 
         The user will ask you follow on questions and you are to respond in maximum 3 sentences using information given to you from the user's post analytics as evidence and your own conclusions.
         You are allowed to draw your own analyses from the data. You can also draw conclusions like "Why do you think the post was successful?"
 
         Speak in a normal conversational tone. DO NOT prefix your response with "based on the data provided" or similar preambles. Just get right into your answer.
 
-        BE concise. Offer examples. Draw thoughtful conclusions. 
+        BE concise. Offer examples. Draw thoughtful conclusions.
 
         The data of post information:
 
@@ -61,9 +60,9 @@ module Prompts
           "Post Created At" => post.post_created_at,
           "Language" => post.lang,
           "User Profile Clicks" => post.user_profile_clicks,
-          "Engagements" => post.engagements,
-          "Annotations" => format_annotations(post),
-          "Mentions" => format_mentions(post)
+          # "Engagements" => post.engagements,
+          # "Annotations" => format_annotations(post),
+          # "Mentions" => format_mentions(post)
         }
       end
 

@@ -1,27 +1,22 @@
-<div class="container mt-5">
-    <h1 class="text-center mb-4">Analytics Dashboard</h1>
+<%= turbo_frame_tag "analytics" do %>
+  <div class="container-fluid bg-dark text-light" style="height: calc(100vh - 70px);">
+    <div class="row h-100">
+      <div class="col-md-3 bg-dark border-end border-secondary p-4 overflow-auto" style="height: 100%;">
+        <%= link_to "New Chat", new_analytics_chat_path, class: "rounded-0 btn btn-outline-secondary mb-4 w-100", data: { turbo_frame: "_top" } %>
+        <%= render partial: 'chat_history', locals: { chats: @chats, current_chat: @current_chat } %>
+      </div>
 
-    <div class="d-flex justify-content-center mb-4">
-        <% if @user.analytics.any? %>
-            <%= link_to "Regenerate Analytics", regenerate_analytics_user_path(current_user), class: "btn btn-primary" %>
-        <% else %>
-            <%= link_to "Generate Analytics", generate_analytics_user_path(current_user), class: "btn btn-primary" %>
+      <div class="col-md-9 p-0">
+        <%= turbo_frame_tag "chat" do %>
+          <div id="chat">
+            <% if @current_chat %>
+              <%= render partial: 'chat', locals: { chat: @current_chat } %>
+            <% else %>
+              <%= render partial: 'analytics_chats/new_chat_form', locals: { user: current_user } %>
+            <% end %>
+          </div>
         <% end %>
+      </div>
     </div>
-
-    <% @analytics.each do |analytic| %>
-        <div class="card mb-3 shadow-sm">
-            <div class="card-header bg-secondary text-white">
-                <h2 class="h5 card-title mb-0"><%= Analytic.titles[analytic.title] %></h2> 
-                <% if analytic.analytics_chat %>
-                    <%= link_to "Chat", analytics_chat_path(analytic.analytics_chat), class: "btn btn-primary btn-sm" %>'
-                <% end %>
-            </div>
-            <div class="card-body bg-dark">
-                <% if analytic.body %>
-                    <p class="card-text"><%= markdown(analytic.body) %></p>
-                <% end %>
-            </div>
-        </div>
-    <% end %>
-</div>
+  </div>
+<% end %>

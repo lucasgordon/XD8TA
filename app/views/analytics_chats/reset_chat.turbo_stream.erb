@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "chat_frame" do %>
+      <%= render partial: 'users/chat', locals: { chat: @new_chat } %>
+<% end %>

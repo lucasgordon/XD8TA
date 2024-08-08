@@ -1,8 +1,8 @@
 <div class="container-fluid bg-dark text-white p-0 m-0 ">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-muted">
     <div class="container-fluid mx-4">
-      <a class="navbar-brand" href="/">
-        <h3>>_ XD8TA</h3>
+      <a class="navbar-brand text-muted" href="/">
+        <h3 class="mt-2">>_ XD8TA</h3>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -11,15 +11,12 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <% if current_user %>
               <li class="nav-item">
-                <%= link_to "My Posts", posts_user_path(current_user), class: "nav-link" %>
+                <%= link_to "Analytics Chat", analytics_user_path(current_user), class: "nav-link" %>
               </li>
               <li class="nav-item">
-                <%= link_to "My Analytics", analytics_user_path(current_user), class: "nav-link" %>
+                <%= link_to "My Posts", posts_user_path(current_user), class: "nav-link" %>
               </li>
             <% end %>
-            <li>
-              <%= link_to "Search Analytics", public_analytics_path, class: "nav-link" %>
-            </li>
           </ul>
           <% if current_user %>
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
@@ -29,9 +26,11 @@
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <%= current_user.name %>
+                <br>
+                <small style="font-size: 0.7em;">@<%= current_user.x_username %></small>
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" data-bs-theme="dark">
-                <li><%= link_to "My Profile", user_path(current_user), class: "dropdown-item" %></li>
+                <li><%= link_to "Account", user_path(current_user), class: "dropdown-item" %></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><%= link_to "Sign Out", sign_out_path, method: :delete, class: "dropdown-item text-danger" %></li>
               </ul>
