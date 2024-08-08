@@ -24,5 +24,5 @@ Rails.application.routes.draw do
   get "sign_in" => "sessions#new", as: :sign_in
   get "sign_out" => "sessions#destroy", as: :sign_out
 
-  resources :posts
+  resources :posts, only: [:show]
 end

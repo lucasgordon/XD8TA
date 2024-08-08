@@ -1,9 +1,8 @@
 class PostsController < ApplicationController
-  def index
-    @posts = Post.all
-  end
 
   def show
-    @post = Post.find(params[:id])
+    @x_username = params[:x_username]
+    @analytic_chat = params[:analytic_chat]
+    @posts = Post.where(x_username: @x_username)
   end
 end

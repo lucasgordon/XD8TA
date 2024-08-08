@@ -50,7 +50,7 @@ class UsersController < ApplicationController
     @current_chat = if params[:chat_id]
                       @chats.find(params[:chat_id])
                     else
-                      @chats.last || @user.analytics_chats.create!(chat_type: "Personal", prompt_temperature: 0.5, x_id: @user.x_id, x_username: @user.x_username)
+                      @chats.first || @user.analytics_chats.create!(chat_type: "Personal", prompt_temperature: 0.5, x_id: @user.x_id, x_username: @user.x_username)
                     end
     end
 

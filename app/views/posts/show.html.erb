@@ -1,7 +1,8 @@
 <div class="container bg-dark">
 
     <div class="mt-5">
-        <h4 class="text-white mb-4 text-muted">@<%= @user.x_username %> posts</h4>
+        <%= link_to "Back", analytics_user_path(chat_id: @analytic_chat), class: "btn btn-outline-secondary rounded-0 mb-4" %>
+        <h4 class="text-white mb-4 text-muted">@<%= @x_username %> posts</h4>
         <div class="table-responsive shadow-lg rounded" data-controller="sortable-table">
             <table class="table table-dark table-hover border border-muted" data-sortable-table-target="table">
                 <thead class="thead-dark">

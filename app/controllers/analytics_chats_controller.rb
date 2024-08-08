@@ -14,10 +14,8 @@ class AnalyticsChatsController < ApplicationController
     @analytics_chat.prompt_temperature = "0.5"
     @analytics_chat.save!
 
-    if Post.where(x_username: @analytics_chat.x_username).empty?
-      twitter_api = XClient.new(@analytics_chat.x_username)
-      twitter_api.fetch_public_metrics
-    end
+    twitter_api = XClient.new(@analytics_chat.x_username)
+    twitter_api.fetch_public_metrics
 
     redirect_to analytics_user_path(current_user, chat_id: @analytics_chat.id)
   end
