@@ -25,7 +25,7 @@ export default class extends Controller {
   }
 
   startCountdown() {
-    let counter = 60;
+    let counter = 10;
     const originalPlaceholder = this.inputTarget.placeholder; // Save the original placeholder
     const interval = setInterval(() => {
       this.inputTarget.placeholder = `You can send a new message in ${counter--} seconds`;
@@ -35,6 +35,6 @@ export default class extends Controller {
         this.submitTarget.disabled = false;
         this.inputTarget.placeholder = originalPlaceholder; // Restore the original placeholder
       }
-    }, 1000);
+    }, 100);
   }
 }

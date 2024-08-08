@@ -1,0 +1,20 @@
+<div class="m-0 container-fluid bg-dark" style="height: calc(100vh - 70px)">
+    <div class="row justify-content-center">
+      <div class="col-md-6 mt-5 border border-secondary p-4">
+        <h3 class="text-light mb-5 text-muted">What user would you like to chat about?</h3>
+
+        <%= form_with model: @analytics_chat, html: { class: 'text-white' } do |form| %>
+          <div class="mb-3">
+            <%= form.label :x_username, "Username", class: "form-label text-light text-muted" %>
+            <div class="input-group" data-controller="username">
+              <span class="input-group-text">@</span>
+              <%= form.text_field :x_username, placeholder: "i.e. #{@user.x_username}", class: "form-control", data: { username_target: "field", action: "keypress->username#preventAtSign" }, pattern: "[^@]*", title: "Username cannot contain the '@' character" %>
+            </div>
+          </div>
+
+          <%= form.submit "Chat", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

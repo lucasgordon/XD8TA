@@ -10,7 +10,7 @@ module Prompts
     end
 
     def get_username(analytic_chat)
-      analytic_chat.user ? analytic_chat.user.x_username : analytic_chat.x_username
+      analytic_chat.x_username
     end
 
     def system_prompt
@@ -60,9 +60,9 @@ module Prompts
           "Post Created At" => post.post_created_at,
           "Language" => post.lang,
           "User Profile Clicks" => post.user_profile_clicks,
-          "Engagements" => post.engagements,
-          "Annotations" => format_annotations(post),
-          "Mentions" => format_mentions(post)
+          # "Engagements" => post.engagements,
+          # "Annotations" => format_annotations(post),
+          # "Mentions" => format_mentions(post)
         }
       end
 

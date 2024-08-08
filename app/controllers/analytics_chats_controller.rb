@@ -1,6 +1,27 @@
 class AnalyticsChatsController < ApplicationController
 
-  before_action :set_analytics_chat, only: [:show, :create_message]
+  before_action :set_analytics_chat, only: [:create_message]
+
+  def new
+    @analytics_chat = AnalyticsChat.new
+    @user = current_user
+  end
+
+  def create
+    @analytics_chat = AnalyticsChat.new(analytic_chat_params)
+    @analytics_chat.chat_type = current_user.x_username == analytic_chat_params[:x_username] ? "Personal" : "Public"
+    @analytics_chat.user_id = current_user.id
+    @analytics_chat.prompt_temperature = "0.5"
+    @analytics_chat.save!
+
+    if Post.where(x_username: @analytics_chat.x_username).empty?
+      twitter_api = XClient.new(@analytics_chat.x_username)
+      twitter_api.fetch_public_metrics
+    end
+
+    redirect_to analytics_user_path(current_user, chat_id: @analytics_chat.id)
+  end
+
 
 
   def create_message
@@ -21,15 +42,6 @@ class AnalyticsChatsController < ApplicationController
     @message.update(agent_response: text_response)
 
     respond_to do |format|
-      format.turbo_stream
-    end
-  end
-
-  def create
-    @chats = current_user.analytics_chats.where(chat_type: "Personal").order(created_at: :desc)
-    @new_chat = current_user.analytics_chats.create!(chat_type: params[:chat_type], prompt_temperature: 0.5, x_id: params[:x_id], x_username: params[:x_username])
-    respond_to do |format|
-      format.html { redirect_to analytics_user_path(current_user, chat_id: @new_chat.id) }
       format.turbo_stream
     end
   end
@@ -60,6 +72,10 @@ class AnalyticsChatsController < ApplicationController
 
   def message_params
     params.require(:message).permit(:user_prompt)
+  end
+
+  def analytic_chat_params
+    params.require(:analytics_chat).permit(:x_id, :x_username)
   end
 
 end

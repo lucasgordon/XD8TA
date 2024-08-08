@@ -11,9 +11,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :public_analytics, only: [:show, :index, :new, :create]
-
-  resources :analytics_chats, only: [:create, :destroy] do
+  resources :analytics_chats, only: [:create, :destroy, :new] do
     member do
       post :create_message
       get :reset_chat

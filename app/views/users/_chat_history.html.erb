@@ -5,10 +5,10 @@
       data: { turbo_frame: "_top" } do %>
           <div class="d-flex justify-content-between align-items-center">
             <% if chat.messages.any? %>
-              <span><%= chat.x_username %></span>
+              <span>@<%= chat.x_username %></span>
               <small><%= chat.messages.first.user_prompt.truncate(15) %></small>
             <% else %>
-              <span><%= chat.x_username %></span>
+              <span>@<%= chat.x_username %></span>
               <small><%= chat.created_at.strftime("%b %d") %></small>
             <% end %>
           </div>
