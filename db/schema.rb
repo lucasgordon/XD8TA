@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_05_224306) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_09_213827) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,7 +29,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_05_224306) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.string "x_username"
-    t.integer "x_id"
+    t.bigint "x_id"
     t.string "chat_type"
     t.index ["user_id"], name: "index_analytics_chats_on_user_id"
   end
@@ -47,8 +47,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_05_224306) do
 
   create_table "entities_annotations", force: :cascade do |t|
     t.bigint "post_id", null: false
-    t.integer "start_location"
-    t.integer "end_location"
+    t.bigint "start_location"
+    t.bigint "end_location"
     t.string "probability"
     t.string "annotation_type"
     t.string "normalized_text"
@@ -70,8 +70,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_05_224306) do
     t.string "mentioned_user_id"
     t.string "mentioned_username"
     t.bigint "post_id", null: false
-    t.integer "start_location"
-    t.integer "end_location"
+    t.bigint "start_location"
+    t.bigint "end_location"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_post_mentions_on_post_id"
@@ -80,29 +80,29 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_05_224306) do
   create_table "posts", force: :cascade do |t|
     t.string "post_id"
     t.text "text"
-    t.integer "retweet_count"
-    t.integer "reply_count"
-    t.integer "like_count"
-    t.integer "quote_count"
-    t.integer "bookmark_count"
-    t.integer "impression_count"
+    t.bigint "retweet_count"
+    t.bigint "reply_count"
+    t.bigint "like_count"
+    t.bigint "quote_count"
+    t.bigint "bookmark_count"
+    t.bigint "impression_count"
     t.datetime "post_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
+    t.bigint "user_id"
     t.string "lang"
     t.string "in_reply_to_user_id"
-    t.integer "user_profile_clicks"
-    t.integer "engagements"
+    t.bigint "user_profile_clicks"
+    t.bigint "engagements"
     t.string "url"
     t.string "x_username"
-    t.integer "x_id"
+    t.bigint "x_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
   create_table "public_analytics", force: :cascade do |t|
     t.string "x_username"
-    t.integer "x_id"
+    t.bigint "x_id"
     t.text "popular_tweet"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -114,18 +114,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_05_224306) do
     t.string "email"
     t.string "password_digest"
     t.string "x_username"
-    t.integer "x_id"
+    t.bigint "x_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "protected"
     t.boolean "verified"
     t.string "pinned_tweet_id"
     t.string "profile_image_url"
-    t.integer "followers_count"
-    t.integer "following_count"
-    t.integer "tweet_count"
-    t.integer "listed_count"
-    t.integer "like_count"
+    t.bigint "followers_count"
+    t.bigint "following_count"
+    t.bigint "tweet_count"
+    t.bigint "listed_count"
+    t.bigint "like_count"
     t.text "description"
     t.string "location"
     t.string "x_account_created_at"
