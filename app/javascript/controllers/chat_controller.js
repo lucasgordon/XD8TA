@@ -21,7 +21,7 @@ export default class extends Controller {
 
   scrollToBottom() {
     const chatHistory = this.messagesTarget;
-    chatHistory.scrollTop = chatHistory.scrollHeight - chatHistory.clientHeight;
+    chatHistory.scrollTop = chatHistory.scrollHeight;
   }
 
   startCountdown() {

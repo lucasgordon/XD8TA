@@ -1,20 +1,37 @@
 <div id="chat-container" data-controller="chat" class="d-flex flex-column" style="height: calc(100vh - 85px);">
-  <div class="chat-header bg-dark border-bottom border-secondary p-3 d-flex justify-content-between">
-    <div>
-      <div class="nav-item dropdown w-100">
+  <div class="chat-header bg-dark border-bottom border-secondary p-3 d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+      <!-- Chat history button for mobile -->
+      <button class="btn btn-outline-secondary me-2 d-md-none rounded-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#chatHistoryOffcanvas" aria-controls="chatHistoryOffcanvas">
+        &lt;
+      </button>
+      
+      <div class="nav-item dropdown">
         <a class="nav-link dropdown-toggle text-muted d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <h4 class="m-0">Chat about @<%= chat.x_username %></h4>
+          <h4 class="m-0 mobile-text">Chat about @<%= chat.x_username %></h4>
         </a>
         <ul class="dropdown-menu mt-3 p-0 mx-0" aria-labelledby="navbarDropdown" data-bs-theme="dark">
-          <%= link_to "Reset Chat", reset_chat_analytics_chat_path(chat), class: "dropdown-item", data: { turbo_frame: "chat_frame" } %>
-          <li><%= button_to "Delete Chat", analytics_chat_path(chat), method: :delete, data: { confirm: "Are you sure?" }, class: "dropdown-item" %></li>
+          <%= link_to "Reset Chat", reset_chat_analytics_chat_path(chat), :class => "dropdown-item mobile-text", :data => { :turbo_frame => "chat_frame" } %>
+          <li><%= button_to "Delete Chat", analytics_chat_path(chat), :method => :delete, :data => { :confirm => "Are you sure?" }, :class => "dropdown-item mobile-text" %></li>
         </ul>
       </div>
     </div>
     <div>
       <% unless chat.x_username == current_user.x_username %>
-        <%= link_to "View Posts", post_path(x_username: chat.x_username, analytic_chat: chat.id), class: "btn btn-outline-secondary rounded-0", data: { turbo_frame: "_top" } %>
+        <%= link_to "Posts", post_path(:x_username => chat.x_username, :analytic_chat => chat.id), :class => "btn btn-outline-secondary rounded-0 mobile-text", :data => { :turbo_frame => "_top" } %>
       <% end %>
+    </div>
+  </div>
+
+  <!-- Chat history offcanvas for mobile -->
+  <div class="offcanvas offcanvas-start bg-dark text-light" tabindex="-1" id="chatHistoryOffcanvas" aria-labelledby="chatHistoryOffcanvasLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title mobile-text" id="chatHistoryOffcanvasLabel">Chat History</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <%= link_to "New Chat", new_analytics_chat_path, :class => "rounded-0 btn btn-outline-secondary mb-4 w-100 mobile-text", :data => { :turbo_frame => "_top" } %>
+      <%= render :partial => 'chat_history', :locals => { :chats => @chats, :current_chat => @current_chat } %>
     </div>
   </div>
 
@@ -22,7 +39,7 @@
     <%= turbo_frame_tag "chat_frame" do %>
       <div id="chat-messages" class="chat-history">
         <% chat.messages.each do |message| %>
-          <%= render partial: 'users/message', locals: { message: message } %>
+          <%= render :partial => 'users/message', :locals => { :message => message } %>
         <% end %>
       </div>
     <% end %>
@@ -30,11 +47,11 @@
   </div>
 
   <div class="chat-input-container bg-dark border-top border-secondary p-3">
-    <%= form_with(model: [chat, chat.messages.build], url: create_message_analytics_chat_path(chat), local: false, html: { class: "input-form", data: { action: "submit->chat#handleSubmit" } }) do |form| %>
+    <%= form_with(:model => [chat, chat.messages.build], :url => create_message_analytics_chat_path(chat), :local => false, :html => { :class => "input-form", :data => { :action => "submit->chat#handleSubmit" } }) do |form| %>
       <div class="input-group">
-        <%= form.text_field :user_prompt, class: 'form-control bg-secondary text-light rounded-0', placeholder: "Ask anything about @#{chat.x_username}'s analytics", aria_label: "Message input", data: { chat_target: "input" } %>
+        <%= form.text_field :user_prompt, :class => 'form-control bg-secondary text-light rounded-0 mobile-text', :placeholder => "Ask anything about @#{chat.x_username}'s analytics", :aria_label => "Message input", :data => { :chat_target => "input" } %>
         <div class="input-group-append">
-          <%= form.submit 'Send', class: 'btn btn-primary mx-3 rounded-0', data: { chat_target: "submit" } %>
+          <%= form.submit 'Send', :class => 'btn btn-primary mx-3 rounded-0 mobile-text', :data => { :chat_target => "submit" } %>
         </div>
       </div>
     <% end %>
