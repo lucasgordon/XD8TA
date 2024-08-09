@@ -1,33 +1,33 @@
-<%= form_with model: @user, local: true, class: "mt-4" do |f| %>
+<%= form_with model: @user, local: true, class: "mt-4 text-white p-4 rounded" do |f| %>
   <div class="mb-3">
-    <%= f.label :name, class: "form-label" %>
-    <%= f.text_field :name, autofocus: true, class: "form-control" %>
+    <%= f.label :name, class: "form-label text-white" %>
+    <%= f.text_field :name, autofocus: true, class: "form-control bg-secondary text-white" %>
   </div>
 
   <div class="mb-3">
-    <%= f.label :email, class: "form-label" %>
-    <%= f.email_field :email, class: "form-control" %>
+    <%= f.label :email, class: "form-label text-white" %>
+    <%= f.email_field :email, class: "form-control bg-secondary text-white" %>
   </div>
 
   <div class="mb-3">
-    <%= f.label :password, class: "form-label" %>
-    <%= f.password_field :password, class: "form-control" %>
+    <%= f.label :password, class: "form-label text-white" %>
+    <%= f.password_field :password, class: "form-control bg-secondary text-white" %>
   </div>
 
   <div class="mb-3">
-    <%= f.label :password_confirmation, class: "form-label" %>
-    <%= f.password_field :password_confirmation, class: "form-control" %>
+    <%= f.label :password_confirmation, class: "form-label text-white" %>
+    <%= f.password_field :password_confirmation, class: "form-control bg-secondary text-white" %>
   </div>
 
   <div class="mb-3">
-    <%= f.label :x_username, class: "form-label" %>
-    <div class="input-group" data-controller="username">
-      <span class="input-group-text">@</span>
-      <%= f.text_field :x_username, class: "form-control", data: { username_target: "field", action: "keypress->username#preventAtSign" }, pattern: "[^@]*", title: "Username cannot contain the '@' character" %>
+    <%= f.label :x_username, class: "form-label text-white" %>
+    <div class="input-group bg-secondary">
+      <span class="input-group-text bg-dark text-white">@</span>
+      <%= f.text_field :x_username, class: "form-control bg-secondary text-white", data: { username_target: "field", action: "keypress->username#preventAtSign" }, pattern: "[^@]*", title: "Username cannot contain the '@' character" %>
     </div>
   </div>
 
   <div class="d-grid">
-    <%= f.submit @user.new_record? ? "Sign Up" : "Update", class: "btn btn-secondary" %>
+    <%= f.submit @user.new_record? ? "Sign Up" : "Update", class: "btn btn-light" %>
   </div>
 <% end %>

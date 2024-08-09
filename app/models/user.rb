@@ -11,10 +11,16 @@ class User < ApplicationRecord
   has_many :analytics_chats
 
   after_create :fetch_profile_information
+  after_create :fetch_user_posts
 
   def fetch_profile_information
-    x_client = XClient.new(self)
-    x_client.fetch_user_information(self)
+    x_client = XClient.new(username: self.x_username, user: self)
+    x_client.fetch_user_information
+  end
+
+  def fetch_user_posts
+    x_client = XClient.new(username: self.x_username, user: self)
+    x_client.fetch_public_metrics
   end
 
   def generate_analytics

@@ -14,4 +14,11 @@ class ApplicationController < ActionController::Base
   def authenticate_user
     redirect_to sign_in_path unless user_signed_in?
   end
+
+  def require_correct_user
+    @user = User.find(params[:id])
+    unless current_user == @user
+      redirect_to root_url, status: :see_other
+    end
+  end
 end

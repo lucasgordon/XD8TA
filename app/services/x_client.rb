@@ -5,7 +5,8 @@ require 'simple_oauth'
 class XClient
   BASE_URL = "https://api.twitter.com/2/users/"
 
-  def initialize(username)
+  def initialize(username:, user: nil)
+    @user = user
     @x_username = username
     @x_id = fetch_user_x_id(@x_username)
   end
@@ -16,14 +17,13 @@ class XClient
     data['data']['id'] if data['data']
   end
 
-  def fetch_user_information(user)
-    @username = user.x_username
+  def fetch_user_information
     fields = "user.fields=created_at,description,entities,id,location,name,pinned_tweet_id,profile_image_url,protected,public_metrics,url,username,verified,withheld"
-    url = "https://api.twitter.com/2/users/by/username/#{@username}?#{fields}"
+    url = "https://api.twitter.com/2/users/by/username/#{@x_username}?#{fields}"
     data = fetch_twitter_data(url, {})
 
     if data['data']
-      user.update!(
+      @user.update!(
         x_id: data['data']['id'],
         protected: data['data']['protected'],
         verified: data['data']['verified'],

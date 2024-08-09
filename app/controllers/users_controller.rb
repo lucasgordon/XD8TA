@@ -1,5 +1,10 @@
 class UsersController < ApplicationController
 
+  before_action :authenticate_user, except: [:new, :create]
+
+  before_action :require_correct_user, only: [:edit, :update, :show, :fetch_posts_private_metrics, :fetch_posts_public_metrics, :analytics]
+
+
   def new
     @user = User.new
   end
@@ -28,7 +33,7 @@ class UsersController < ApplicationController
   end
 
   def posts
-    @posts = current_user.posts
+    @posts = Post.where(x_username: current_user.x_username)
     @user = current_user
   end
 
