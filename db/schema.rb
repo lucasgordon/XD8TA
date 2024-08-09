@@ -11,11 +11,8 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.1].define(version: 2024_08_09_213827) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "analytics", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "title"
@@ -27,7 +24,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_09_213827) do
     t.string "prompt_temperature"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id", null: false
+    t.integer "user_id", null: false
     t.string "x_username"
     t.bigint "x_id"
     t.string "chat_type"
@@ -35,7 +32,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_09_213827) do
   end
 
   create_table "context_annotation_domains", force: :cascade do |t|
-    t.bigint "post_id", null: false
+    t.integer "post_id", null: false
     t.string "domain_name"
     t.string "domain_description"
     t.string "entity_name"
@@ -46,7 +43,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_09_213827) do
   end
 
   create_table "entities_annotations", force: :cascade do |t|
-    t.bigint "post_id", null: false
+    t.integer "post_id", null: false
     t.bigint "start_location"
     t.bigint "end_location"
     t.string "probability"
@@ -58,7 +55,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_09_213827) do
   end
 
   create_table "messages", force: :cascade do |t|
-    t.bigint "analytics_chat_id", null: false
+    t.integer "analytics_chat_id", null: false
     t.string "agent_response"
     t.string "user_prompt"
     t.datetime "created_at", null: false
@@ -69,7 +66,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_09_213827) do
   create_table "post_mentions", force: :cascade do |t|
     t.string "mentioned_user_id"
     t.string "mentioned_username"
-    t.bigint "post_id", null: false
+    t.integer "post_id", null: false
     t.bigint "start_location"
     t.bigint "end_location"
     t.datetime "created_at", null: false
@@ -109,6 +106,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_09_213827) do
     t.index ["x_id"], name: "index_public_analytics_on_x_id"
   end
 
+  create_table "user_posts", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "post_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_user_posts_on_post_id"
+    t.index ["user_id"], name: "index_user_posts_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -117,6 +123,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_09_213827) do
     t.bigint "x_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "x_access_token"
+    t.string "x_access_token_secret"
+    t.string "x_access_token_key"
+    t.string "x_access_token_secret_key"
     t.boolean "protected"
     t.boolean "verified"
     t.string "pinned_tweet_id"
@@ -138,4 +148,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_09_213827) do
   add_foreign_key "messages", "analytics_chats"
   add_foreign_key "post_mentions", "posts"
   add_foreign_key "public_analytics", "posts", column: "x_id"
+  add_foreign_key "user_posts", "posts"
+  add_foreign_key "user_posts", "users"
 end
