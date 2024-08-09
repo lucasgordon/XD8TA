@@ -12,7 +12,9 @@
       </div>
     </div>
     <div>
-      <%= link_to "View Posts", post_path(x_username: chat.x_username, analytic_chat: chat.id), class: "btn btn-outline-secondary rounded-0", data: { turbo_frame: "_top" } %>
+      <% unless chat.x_username == current_user.x_username %>
+        <%= link_to "View Posts", post_path(x_username: chat.x_username, analytic_chat: chat.id), class: "btn btn-outline-secondary rounded-0", data: { turbo_frame: "_top" } %>
+      <% end %>
     </div>
   </div>
 
