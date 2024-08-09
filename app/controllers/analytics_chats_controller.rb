@@ -17,7 +17,7 @@ class AnalyticsChatsController < ApplicationController
     @analytics_chat.save!
 
     unless Post.where(x_username: @analytics_chat.x_username).exists?
-      twitter_api = XClient.new(@analytics_chat.x_username)
+      twitter_api = XClient.new(username: @analytics_chat.x_username)
       twitter_api.fetch_public_metrics
     end
 

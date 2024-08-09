@@ -21,7 +21,7 @@ export default class extends Controller {
 
   scrollToBottom() {
     const chatHistory = this.messagesTarget;
-    chatHistory.scrollTop = chatHistory.scrollHeight;
+    chatHistory.scrollTop = chatHistory.scrollHeight - chatHistory.clientHeight;
   }
 
   startCountdown() {
@@ -35,6 +35,6 @@ export default class extends Controller {
         this.submitTarget.disabled = false;
         this.inputTarget.placeholder = originalPlaceholder; // Restore the original placeholder
       }
-    }, 100);
+    }, 1000);
   }
 }

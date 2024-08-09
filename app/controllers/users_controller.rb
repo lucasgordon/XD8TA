@@ -2,7 +2,7 @@ class UsersController < ApplicationController
 
   before_action :authenticate_user, except: [:new, :create]
 
-  before_action :require_correct_user, only: [:edit, :update, :show, :fetch_posts_private_metrics, :fetch_posts_public_metrics, :analytics]
+  before_action :require_correct_user, only: [:edit, :update, :show, :analytics]
 
 
   def new
@@ -35,18 +35,6 @@ class UsersController < ApplicationController
   def posts
     @posts = Post.where(x_username: current_user.x_username)
     @user = current_user
-  end
-
-  def fetch_posts_private_metrics
-    twitter_api = XClient.new(current_user)
-    result = twitter_api.fetch_private_metrics
-    redirect_to posts_user_path(current_user)
-  end
-
-  def fetch_posts_public_metrics
-    twitter_api = XClient.new(current_user)
-    result = twitter_api.fetch_public_metrics
-    redirect_to posts_user_path(current_user)
   end
 
   def analytics

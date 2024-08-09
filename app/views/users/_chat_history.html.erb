@@ -1,4 +1,4 @@
-<div id="chat-history" class="list-group overflow-auto rounded-0" style="overflow-y: auto;">
+<div id="chat-history" class="list-group overflow-auto rounded-0" style="overflow-y: auto; height: calc(100vh - 85px);">
   <% chats.each do |chat| %>
     <%= link_to analytics_user_path(current_user, chat_id: chat.id), 
       class: "list-group-item list-group-item-action #{'active' if chat == current_chat} text-light border-secondary",
