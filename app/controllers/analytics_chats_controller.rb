@@ -14,6 +14,7 @@ class AnalyticsChatsController < ApplicationController
     @analytics_chat.chat_type = current_user.x_username == analytic_chat_params[:x_username] ? "Personal" : "Public"
     @analytics_chat.user_id = current_user.id
     @analytics_chat.prompt_temperature = "0.5"
+    @analytics_chat.x_username = @analytics_chat.x_username.downcase
     @analytics_chat.save!
 
     unless Post.where(x_username: @analytics_chat.x_username).exists?

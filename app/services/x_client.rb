@@ -7,7 +7,7 @@ class XClient
 
   def initialize(username:, user: nil)
     @user = user
-    @x_username = username
+    @x_username = username.downcase
     fetch_user_x_information(@x_username)
     @x_id = AccountXProfile.find_by(x_username: @x_username).x_id
   end
@@ -28,6 +28,15 @@ class XClient
         profile.x_id = data['data']['id']
         profile.verified = data['data']['verified']
         profile.profile_image_url = data['data']['profile_image_url'].gsub!(/_normal|_bigger|_mini/, '')
+        profile.pinned_tweet_id = data['data']['pinned_tweet_id']
+        profile.followers_count = data['data']['public_metrics']['followers_count']
+        profile.following_count = data['data']['public_metrics']['following_count']
+        profile.tweet_count = data['data']['public_metrics']['tweet_count']
+        profile.listed_count = data['data']['public_metrics']['listed_count']
+        profile.like_count = data['data']['public_metrics']['like_count']
+        profile.description = data['data']['description']
+        profile.location = data['data']['location']
+        profile.x_account_created_at = data['data']['created_at']
       end
     end
   end
@@ -58,12 +67,21 @@ class XClient
         profile.x_id = data['data']['id']
         profile.verified = data['data']['verified']
         profile.profile_image_url = data['data']['profile_image_url'].gsub!(/_normal|_bigger|_mini/, '')
+        profile.pinned_tweet_id = data['data']['pinned_tweet_id']
+        profile.followers_count = data['data']['public_metrics']['followers_count']
+        profile.following_count = data['data']['public_metrics']['following_count']
+        profile.tweet_count = data['data']['public_metrics']['tweet_count']
+        profile.listed_count = data['data']['public_metrics']['listed_count']
+        profile.like_count = data['data']['public_metrics']['like_count']
+        profile.description = data['data']['description']
+        profile.location = data['data']['location']
+        profile.x_account_created_at = data['data']['created_at']
       end
     end
   end
 
   def fetch_public_metrics
-    url = "#{BASE_URL}#{@x_id}/tweets?max_results=100" +
+    url = "#{BASE_URL}#{@x_id}/tweets?max_results=5" +
     "&tweet.fields=id,text,attachments,author_id,context_annotations,conversation_id,created_at,entities,geo,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,withheld" +
     "&expansions=attachments.poll_ids,attachments.media_keys,author_id,referenced_tweets.id,referenced_tweets.id.author_id,in_reply_to_user_id" +
     "&user.fields=username"

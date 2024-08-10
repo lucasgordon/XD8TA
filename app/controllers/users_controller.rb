@@ -17,6 +17,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     @user.email = @user.email.downcase if @user.email.present?
+    @user.x_username = @user.x_username.downcase if @user.x_username.present?
     @user.save!
     session[:user_id] = @user.id
     redirect_to root_path

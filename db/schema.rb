@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_10_184009) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_10_204056) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,6 +21,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_10_184009) do
     t.string "profile_image_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "pinned_tweet_id"
+    t.bigint "followers_count"
+    t.bigint "following_count"
+    t.bigint "tweet_count"
+    t.bigint "listed_count"
+    t.bigint "like_count"
+    t.text "description"
+    t.string "location"
+    t.string "x_account_created_at"
   end
 
   create_table "analytics", force: :cascade do |t|

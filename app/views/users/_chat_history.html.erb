@@ -4,7 +4,7 @@
       class: "list-group-item list-group-item-action #{'active' if chat == current_chat} text-light border-secondary",
       data: { turbo_frame: "_top" } do %>
           <div class="d-flex align-items-center">
-            <% account_profile = AccountXProfile.find_by(x_username: chat.x_username) %>
+            <% account_profile = AccountXProfile.find_by(x_username: chat.x_username.downcase) %>
               <img src="<%= account_profile&.profile_image_url %>" class="rounded-circle" alt="Profile Image" style="width: 40px; height: 40px; margin-right: 8px;">
               <span style="line-height: 40px;">@<%= chat.x_username %></span>
           </div>
