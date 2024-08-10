@@ -53,16 +53,27 @@ body {
   }
 
   @media (max-width: 767.98px) {
-    .mobile-text {
-      font-size: 0.5rem !important;
-    }
-    
-    h4.mobile-text {
-      font-size: 1rem !important;
-    }
-    
     .offcanvas {
       width: 80%;
       max-width: 300px;
+    }
+
+    .chat-input-container {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      z-index: 1000; 
+    }
+
+    .user-message {
+      max-width: 100%;
+      word-wrap: break-word;
+    }
+    
+    .agent-message {
+      background-color: #e9ecef;
+      color: #333;
+      max-width: 100%;
+      word-wrap: break-word;
     }
   }
