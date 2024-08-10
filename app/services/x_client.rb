@@ -8,13 +8,28 @@ class XClient
   def initialize(username:, user: nil)
     @user = user
     @x_username = username
-    @x_id = fetch_user_x_id(@x_username)
+    fetch_user_x_information(@x_username)
+    @x_id = AccountXProfile.find_by(x_username: @x_username).x_id
   end
 
   def fetch_user_x_id(username)
     url = "https://api.twitter.com/2/users/by/username/#{username}"
     data = fetch_twitter_data(url, {})
     data['data']['id'] if data['data']
+  end
+
+  def fetch_user_x_information(username)
+    fields = "user.fields=created_at,description,entities,id,location,name,pinned_tweet_id,profile_image_url,protected,public_metrics,url,username,verified,verified_type,withheld"
+    url = "https://api.twitter.com/2/users/by/username/#{username}?#{fields}"
+    data = fetch_twitter_data(url, {})
+
+    if data['data']
+      AccountXProfile.find_or_create_by(x_username: username) do |profile|
+        profile.x_id = data['data']['id']
+        profile.verified = data['data']['verified']
+        profile.profile_image_url = data['data']['profile_image_url'].gsub!(/_normal|_bigger|_mini/, '')
+      end
+    end
   end
 
   def fetch_user_information
@@ -38,11 +53,17 @@ class XClient
         location: data['data']['location'],
         x_account_created_at: data['data']['created_at']
       )
+
+      AccountXProfile.find_or_create_by(x_username: @user.x_username) do |profile|
+        profile.x_id = data['data']['id']
+        profile.verified = data['data']['verified']
+        profile.profile_image_url = data['data']['profile_image_url'].gsub!(/_normal|_bigger|_mini/, '')
+      end
     end
   end
 
   def fetch_public_metrics
-    url = "#{BASE_URL}#{@x_id}/tweets?max_results=100" +
+    url = "#{BASE_URL}#{@x_id}/tweets?max_results=5" +
     "&tweet.fields=id,text,attachments,author_id,context_annotations,conversation_id,created_at,entities,geo,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,withheld" +
     "&expansions=attachments.poll_ids,attachments.media_keys,author_id,referenced_tweets.id,referenced_tweets.id.author_id,in_reply_to_user_id" +
     "&user.fields=username"
