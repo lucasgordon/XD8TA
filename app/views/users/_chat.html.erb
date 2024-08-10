@@ -11,22 +11,27 @@
           <h4 class="m-0 mobile-text">Chat about @<%= chat.x_username %></h4>
         </a>
         <ul class="dropdown-menu mt-3 p-0 mx-0" aria-labelledby="navbarDropdown" data-bs-theme="dark">
+          <% unless chat.x_username == current_user.x_username %>
+            <li class="d-md-none">
+              <%= link_to "View Posts", post_path(:x_username => chat.x_username, :analytic_chat => chat.id), :class => "dropdown-item mobile-text", :data => { :turbo_frame => "_top" } %>
+            </li>
+          <% end %>
           <%= link_to "Reset Chat", reset_chat_analytics_chat_path(chat), :class => "dropdown-item mobile-text", :data => { :turbo_frame => "chat_frame" } %>
           <li><%= button_to "Delete Chat", analytics_chat_path(chat), :method => :delete, :data => { :confirm => "Are you sure?" }, :class => "dropdown-item mobile-text" %></li>
         </ul>
       </div>
     </div>
-    <div>
-      <% unless chat.x_username == current_user.x_username %>
-        <%= link_to "Posts", post_path(:x_username => chat.x_username, :analytic_chat => chat.id), :class => "btn btn-outline-secondary rounded-0 mobile-text", :data => { :turbo_frame => "_top" } %>
-      <% end %>
-    </div>
+    <% unless chat.x_username == current_user.x_username %>
+      <div class="d-none d-md-block">
+        <%= link_to "View Posts", post_path(:x_username => chat.x_username, :analytic_chat => chat.id), :class => "btn btn-outline-secondary rounded-0 mobile-text", :data => { :turbo_frame => "_top" } %>
+      </div>
+    <% end %>
   </div>
 
   <!-- Chat history offcanvas for mobile -->
   <div class="offcanvas offcanvas-start bg-dark text-light" tabindex="-1" id="chatHistoryOffcanvas" aria-labelledby="chatHistoryOffcanvasLabel">
     <div class="offcanvas-header">
-      <h4 class="offcanvas-title" id="chatHistoryOffcanvasLabel">Chat History</h4>
+      <h5 class="offcanvas-title" id="chatHistoryOffcanvasLabel">Chat History</h5>
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
