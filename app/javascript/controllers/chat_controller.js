@@ -28,7 +28,7 @@ export default class extends Controller {
     let counter = 10;
     const originalPlaceholder = this.inputTarget.placeholder; // Save the original placeholder
     const interval = setInterval(() => {
-      this.inputTarget.placeholder = `You can send a new message in ${counter--} seconds`;
+      this.inputTarget.placeholder = `Ask again in ${counter--}`;
       if (counter < 0) {
         clearInterval(interval);
         this.inputTarget.disabled = false;
