@@ -8,8 +8,8 @@
       
       <div class="nav-item dropdown">
         <a class="nav-link dropdown-toggle text-muted d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <h4 class="m-0 mobile-text">Chat about @<%= chat.x_username %></h4>
-        </a>
+          <h5 class="m-0 mobile-text">Chat about @<%= chat.x_username %></h5>
+      </a>
         <ul class="dropdown-menu mt-3 p-0 mx-0" aria-labelledby="navbarDropdown" data-bs-theme="dark">
           <% unless chat.x_username == current_user.x_username %>
             <li class="d-md-none">
@@ -29,7 +29,7 @@
   </div>
 
   <!-- Chat history offcanvas for mobile -->
-  <div class="offcanvas offcanvas-start bg-dark text-light" tabindex="-1" id="chatHistoryOffcanvas" aria-labelledby="chatHistoryOffcanvasLabel">
+  <div class="offcanvas offcanvas-start bg-dark text-light" style="width: 100%;" tabindex="-1" id="chatHistoryOffcanvas" aria-labelledby="chatHistoryOffcanvasLabel">
     <div class="offcanvas-header">
       <h5 class="offcanvas-title" id="chatHistoryOffcanvasLabel">Chat History</h5>
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
