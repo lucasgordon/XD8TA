@@ -81,7 +81,7 @@ class XClient
   end
 
   def fetch_public_metrics
-    url = "#{BASE_URL}#{@x_id}/tweets?max_results=5" +
+    url = "#{BASE_URL}#{@x_id}/tweets?max_results=100" +
     "&tweet.fields=id,text,attachments,author_id,context_annotations,conversation_id,created_at,entities,geo,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,withheld" +
     "&expansions=attachments.poll_ids,attachments.media_keys,author_id,referenced_tweets.id,referenced_tweets.id.author_id,in_reply_to_user_id" +
     "&user.fields=username"
