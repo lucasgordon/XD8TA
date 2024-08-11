@@ -3,7 +3,7 @@
 ## Overview
 XD8TA.com is a web application that allows users to interact with a Language Model (LLM) to analyze and interact with user posts on a social media platform. The website is built using Ruby on Rails and integrates with the X API and OpenAI API to provide various functionalities.
 
-![image](https://github.com/user-attachments/assets/c075c47b-3313-455b-a082-fc7a7158a504)
+![image](https://github.com/user-attachments/assets/485175ed-ccf1-463a-9e79-881e78191a44)
 ![image](https://github.com/user-attachments/assets/e8c6d5fa-089b-40ff-abf1-914d26abde60)
 
 
